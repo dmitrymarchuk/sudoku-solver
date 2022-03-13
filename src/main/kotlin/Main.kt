@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import preview.sampleBoard
-import ui.board.UIBoard
+import ui.board.UiBoard
 
 @Composable
 @Preview
@@ -18,7 +18,7 @@ fun App() {
     Box(
       modifier = Modifier.widthIn(min = 400.dp, max = 800.dp)
     ) {
-      UIBoard(sampleBoard)
+      UiBoard(sampleBoard)
     }
   }
 }

@@ -6,18 +6,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import board.UIThreeByThreeGrid
+import board.UiGrid
 import model.House
 
 @Composable
 @Preview
-fun UIHouse(house: House, maxWidth: Dp, modifier: Modifier = Modifier) {
-  UIThreeByThreeGrid(
+fun UiHouse(house: House, maxWidth: Dp, modifier: Modifier = Modifier) {
+  UiGrid(
     maxWidth,
     modifier,
     Color.LightGray,
     0.2.dp,
   ) { position ->
-    UICell(house[position], maxWidth / 3)
+    UiCell(house[position], maxWidth / 3)
   }
 }

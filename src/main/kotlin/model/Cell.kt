@@ -4,7 +4,8 @@ sealed class Cell {
   object Empty : Cell()
   class Value(val value: Int) : Cell() {
     companion object {
-      fun Int.toCell(): Value = Value(this)
+      val Int.cell
+        get() = Value(this)
     }
   }
 }

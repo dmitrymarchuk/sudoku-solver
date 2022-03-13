@@ -16,7 +16,7 @@ import border
 import java.util.*
 
 @Composable
-fun UIThreeByThreeGrid(
+fun UiGrid(
   maxWidth: Dp,
   modifier: Modifier = Modifier,
   innerBorderColor: Color = Color.Transparent,
