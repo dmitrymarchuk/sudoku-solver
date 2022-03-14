@@ -3,26 +3,25 @@ package util
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
-internal class UtilTest {
-  val matrix = (
-      "864" + "371" + "259" +
-          "325" + "849" + "761" +
-          "971" + "265" + "843" +
+val matrix = (
+    "864" + "371" + "259" +
+        "325" + "849" + "761" +
+        "971" + "265" + "843" +
 
-          "436" + "192" + "587" +
-          "198" + "657" + "432" +
-          "257" + "483" + "916" +
+        "436" + "192" + "587" +
+        "198" + "657" + "432" +
+        "257" + "483" + "916" +
 
-          "689" + "734" + "125" +
-          "713" + "528" + "694" +
-          "542" + "916" + "378").map { it.digitToInt() }
+        "689" + "734" + "125" +
+        "713" + "528" + "694" +
+        "542" + "916" + "378").map { it.digitToInt() }
 
+internal class CollectionUtilTest {
   @Test
   fun groupBy9() {
-    val row = (9 downTo 1).toList()
-    val grid = 9.repeat(row)
+    val cells = (1 .. 9*9).toList()
 
-    assertEquals(grid, grid.flatten().groupBy9())
+    assertEquals(cells, cells.groupBy9().flatten())
   }
 
   @Test
@@ -65,6 +64,4 @@ internal class UtilTest {
     val quadrant8 = "125" + "694" + "378"
     assertEquals(quadrant8.map { it.digitToInt() }, matrix.quadrant(8))
   }
-
-  @Test
 }

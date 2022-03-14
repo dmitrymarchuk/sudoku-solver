@@ -15,12 +15,10 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import model.ui.BoardModel
 import model.parse.loadCsv
-import preview.sampleBoard
 import ui.board.UiBoard
 
 @Composable
-@Preview
-fun App(board: BoardModel = sampleBoard) {
+fun App(board: BoardModel) {
   MaterialTheme {
     UiBoard(board)
   }
@@ -35,7 +33,7 @@ fun main() = application {
       Modifier.widthIn(min = 400.dp, max = 800.dp)
         .clickable { board = list.next() }
     ) {
-      App(board)
+      App(board.boardModel)
     }
   }
 }

@@ -10,7 +10,6 @@ import board.UiGrid
 import model.ui.Cell
 
 @Composable
-@Preview
 fun UiHouse(house: List<Cell>, maxWidth: Dp, modifier: Modifier = Modifier) {
   UiGrid(
     maxWidth,

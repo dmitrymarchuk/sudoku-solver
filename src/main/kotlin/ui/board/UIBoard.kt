@@ -11,9 +11,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
 import board.UiGrid
 import model.ui.Cell
+import preview.sampleBoard
 
 @Composable
 @Preview
+private fun UiBoardPreview() {
+  UiBoard(sampleBoard)
+}
+
+@Composable
 fun UiBoard(
   board: List<List<Cell>>,
 ) {

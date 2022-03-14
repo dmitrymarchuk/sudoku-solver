@@ -5,6 +5,7 @@ import util.groupBy9
 class BoardModel(val cells: List<List<Cell>>) : List<List<Cell>> by cells {
   init {
     assert(cells.size == 9)
+    assert(cells.all { it.size == 9 })
   }
 
   companion object {

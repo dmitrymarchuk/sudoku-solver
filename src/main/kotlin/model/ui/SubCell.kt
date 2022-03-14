@@ -3,9 +3,9 @@ package model.ui
 sealed class SubCell {
   object Empty : SubCell()
 
-  class Normal(val value: Int) : SubCell()
-  class CrossedOut(val value: Int) : SubCell()
-  class Highlighted(val value: Int) : SubCell()
+  data class Normal(val value: Int) : SubCell()
+  data class CrossedOut(val value: Int) : SubCell()
+  data class Highlighted(val value: Int) : SubCell()
   companion object {
     val Int.subCell
       get() = Normal(this)
