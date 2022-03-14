@@ -1,15 +1,16 @@
 package model
 
-class Board(val cells: List<List<Cell>>) : List<List<Cell>> by cells {
-  init {
-    assert(cells.size == 9)
-  }
+import util.groupBy9
+import util.quadrant
+import util.transpose
 
-  companion object {
-    fun from(vararg elements: Cell): Board =
-      Board((0 until 9).map { elements.take(9) })
+class Board(cells: List<Int>) : List<Int> by cells {
+  val rows = cells.groupBy9()
+  val columns = rows.transpose()
 
-    fun from(vararg houses: List<Cell>): Board =
-      Board(houses.toList())
-  }
+  val rowBlocks = rows.map(Block::fromList)
+  val columnBlocks = rows.map(Block::fromList)
+  val houseBlocks = (0 until 9).map(cells::quadrant)
 }
+
+

@@ -1,4 +1,4 @@
-package model
+package model.ui
 
 sealed class Cell {
   object Empty : Cell()
@@ -10,7 +10,7 @@ sealed class Cell {
   }
 
   class Multi(
-    val subCells: Grid<SubCell>,
+    val subCells: List<SubCell>,
   ) : Cell(),
       List<SubCell> by subCells {
     init {

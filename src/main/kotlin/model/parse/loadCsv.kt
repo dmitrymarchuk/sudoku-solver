@@ -1,11 +1,11 @@
 package model.parse
 
-import model.Board
-import model.Cell
+import model.ui.BoardModel
+import model.ui.Cell
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
-fun loadCsv(): Sequence<Board> {
+fun loadCsv(): Sequence<BoardModel> {
   return Thread
     .currentThread()
     .contextClassLoader
@@ -22,6 +22,6 @@ fun loadCsv(): Sequence<Board> {
         else if (it.isDigit()) Cell.Value(it.digitToInt())
         else throw IllegalArgumentException("Illegal char $it")
       }
-      Board.from(*cells.toTypedArray())
+      BoardModel.from(*cells.toTypedArray())
     }
 }

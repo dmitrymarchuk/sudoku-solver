@@ -10,8 +10,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.Dp
 import board.UiGrid
-import model.Cell
-import model.SubCell
+import model.ui.Cell
+import model.ui.SubCell
 
 @Composable
 fun UiMultiCell(cell: Cell.Multi, maxWidth: Dp) {

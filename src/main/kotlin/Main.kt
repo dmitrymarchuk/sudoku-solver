@@ -13,13 +13,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
-import model.Board
+import model.ui.BoardModel
 import model.parse.loadCsv
 import ui.board.UiBoard
 
 @Composable
 @Preview
-fun App(board: Board, clicked: () -> Unit) {
+fun App(board: BoardModel, clicked: () -> Unit) {
   MaterialTheme {
     Box(
       modifier =

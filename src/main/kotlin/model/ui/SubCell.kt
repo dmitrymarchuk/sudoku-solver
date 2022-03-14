@@ -1,4 +1,4 @@
-package model
+package model.ui
 
 sealed class SubCell {
   object Empty : SubCell()

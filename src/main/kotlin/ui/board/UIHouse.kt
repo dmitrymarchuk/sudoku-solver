@@ -7,8 +7,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import board.UiGrid
-import model.Cell
-import model.Grid
+import model.ui.Cell
 
 @Composable
 @Preview

@@ -9,9 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import board.UiGrid
-import model.Board
-import model.Cell
-import model.Grid
+import model.ui.Cell
 
 @Composable
 @Preview
