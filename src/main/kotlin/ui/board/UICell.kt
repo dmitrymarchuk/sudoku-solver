@@ -16,7 +16,7 @@ fun BoxScope.UiCell(cell: Cell, maxWidth: Dp) {
     is Cell.Empty -> {
       //do nothing
     }
-    is Cell.Value -> {
+    is Cell.Single -> {
       Text(
         fontSize = with(LocalDensity.current) { (maxWidth / 2).toSp() },
         fontWeight = FontWeight.Light,
@@ -24,7 +24,7 @@ fun BoxScope.UiCell(cell: Cell, maxWidth: Dp) {
         modifier = Modifier.align(Alignment.Center)
       )
     }
-    is Cell.Value.Multi -> {
+    is Cell.Multi -> {
       UiMultiCell(cell, maxWidth)
     }
   }

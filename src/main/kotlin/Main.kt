@@ -11,8 +11,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
-import model.parse.loadCsv
+import parse.loadCsv
 import model.ui.Cell
+import solve.markPossible
 import ui.board.UiBoard
 
 @Composable
@@ -23,13 +24,13 @@ fun App(board: List<List<Cell>>) {
 }
 
 fun main() = application {
-  val list = loadCsv().iterator()
+  val board = markPossible(loadCsv().first())
   Window(onCloseRequest = ::exitApplication) {
-    var board by remember { mutableStateOf(list.next()) }
+//    var board by remember { mutableStateOf(list) }
     Box(
-      modifier =
-      Modifier.widthIn(min = 400.dp, max = 800.dp)
-        .clickable { board = list.next() }
+      modifier = Modifier
+        .widthIn(min = 400.dp, max = 800.dp)
+//        .clickable { board = markPossible(board) }
     ) {
       App(board.houses)
     }

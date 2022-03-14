@@ -1,39 +1,42 @@
 package model
 
+import model.interfaces.NumbersSet
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import util.repeat
 import java.lang.AssertionError
 
-internal class BlockTest {
+internal class NumbersSetImplTest {
+  private fun get(l: List<Int>) = NumbersSet.fromNumbers(l) as NumbersSetImpl
+
   @Test
   fun testFromList() {
-    var block = Block.fromNumbers(9.repeat(0))
-    assertEquals(0u, block.value)
+    var set = get(9.repeat(0))
+    assertEquals(0u, set.value)
 
-    block = Block.fromNumbers(9.repeat(1))
-    assertEquals(2u, block.value)
+    set = get(9.repeat(1))
+    assertEquals(2u, set.value)
 
-    block = Block.fromNumbers((1..9).toList())
-    assertEquals(0x3feu, block.value)
+    set = get((1..9).toList())
+    assertEquals(0x3feu, set.value)
 
     assertThrows<AssertionError> {
-      block = Block.fromNumbers(10.repeat(0))
+      set = get(10.repeat(0))
     }
 
     assertThrows<AssertionError> {
-      block = Block.fromNumbers(emptyList())
+      set = get(emptyList())
     }
 
     assertThrows<AssertionError> {
-      block = Block.fromNumbers(listOf(1))
+      set = get(listOf(1))
     }
   }
 
   @Test
   fun hasTest() {
-    var block = Block.fromNumbers(9.repeat(0))
+    var block = get(9.repeat(0))
     assertThrows<AssertionError> {
       block.has(0)
     }
@@ -43,14 +46,14 @@ internal class BlockTest {
     assertTrue(block.hasNoNumbers)
     assertFalse(block.hasAnyNumber)
 
-    block = Block.fromNumbers((1..9).toList())
+    block = get((1..9).toList())
     (1..9).forEach {
       assertTrue(block.has(it))
     }
     println(block.value)
     assertTrue(block.hasAllNumbers)
 
-    block = Block.fromNumbers((1..9).toList().map { if (it != 5) it else 0 })
+    block = get((1..9).toList().map { if (it != 5) it else 0 })
     (1..9).forEach {
       if (it == 5)
         assertFalse(block.has(it))

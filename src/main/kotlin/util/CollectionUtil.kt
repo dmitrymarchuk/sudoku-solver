@@ -1,9 +1,9 @@
 package util
 
 fun <T> List<T>.groupBy9(): List<List<T>> {
-  assert(this.size == 9 * 9)
+  this.size.assertNineSq()
 
-  return (0 until 9).map { this.drop(9 * it).take(9) }
+  return zeroUntilNine.map { this.drop(9 * it).take(9) }
 }
 
 fun <T> Int.repeat(value: T): List<T> {
@@ -22,10 +22,13 @@ fun <T> List<List<T>>.rotate(): List<List<T>> {
   return this.transpose().map { it.reversed() }
 }
 
-fun <T> List<T>.quadrant(n: Int): List<T> {
-  assert(this.size == 9 * 9)
+fun <T> List<T>.replace(index: Int, value: T): List<T> =
+  this.toMutableList().apply { set(index, value) }.toList()
 
-  assert(n in 0 until 9)
+fun <T> List<T>.quadrant(n: Int): List<T> {
+  this.size.assertNineSq()
+
+  assert(n in zeroUntilNine)
 
   val firstIndex =
     if (n < 3) n * 3

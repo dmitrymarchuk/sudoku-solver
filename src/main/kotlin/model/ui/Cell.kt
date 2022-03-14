@@ -1,31 +1,34 @@
 package model.ui
 
+import util.assertOneToNine
+import util.repeat
+
 sealed class Cell {
   object Empty : Cell()
-  sealed class Value() : Cell() {
-    abstract val value: Int
-
-    data class Single(override val value: Int) : Value() {
-      init {
-        assert(value in 1..9)
-      }
-
-      companion object {
-        val Int.cell
-          get() = Single(this)
-      }
+  data class Single(val value: Int) : Cell() {
+    init {
+      value.assertOneToNine()
     }
 
-    data class Multi(
-      override val value: Int,
-      val subCells: List<SubCell>,
-    ) : Value(),
-        List<SubCell> by subCells {
-      init {
-        assert(value in 1..9)
-        assert(subCells.size == 9)
-      }
+    companion object {
+      val Int.cell
+        get() = Single(this)
     }
   }
 
+  data class Multi(
+    val subCells: List<SubCell>,
+  ) : Cell(),
+      List<SubCell> by subCells {
+    init {
+      assert(subCells.size == 9)
+    }
+
+    fun setPossible(possible: List<Int>): Multi {
+      return this
+    }
+    companion object {
+      val Empty = Multi(9.repeat(SubCell.Empty))
+    }
+  }
 }

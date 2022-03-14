@@ -14,21 +14,21 @@ import model.ui.Cell
 import model.ui.SubCell
 
 @Composable
-fun UiMultiCell(cell: Cell.Value.Multi, maxWidth: Dp) {
+fun UiMultiCell(cell: Cell.Multi, maxWidth: Dp) {
   UiGrid(maxWidth) { position ->
     val fontSize = with(LocalDensity.current) { (maxWidth / 3 / 1.25f).toSp() }
     val subCell = cell.subCells[position]
     val modifier = Modifier.align(Alignment.Center)
     when (subCell) {
-      SubCell.Empty          ->
+      SubCell.Empty         ->
         Unit
-      is SubCell.Normal      ->
+      is SubCell.Possible   ->
         Text(
           modifier = modifier,
           fontSize = fontSize,
           text = subCell.value.toString()
         )
-      is SubCell.CrossedOut  ->
+      is SubCell.CrossedOut ->
         Text(
           modifier = modifier,
           fontSize = fontSize,

@@ -1,6 +1,6 @@
-package model.parse
+package parse
 
-import model.Board
+import model.interfaces.Board
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
@@ -14,6 +14,6 @@ fun loadCsv(): Sequence<Board> {
       BufferedReader(InputStreamReader(it))
     }
     .lineSequence()
-    .map { it.split(",").drop(1).first() }
+    .map { it.split(",").first() }
     .map(Board::fromString)
 }
