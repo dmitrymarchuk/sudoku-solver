@@ -4,6 +4,7 @@ import model.ui.BoardModel
 import model.ui.Cell
 import util.groupBy9
 import util.quadrant
+import util.rotate
 import util.transpose
 
 class Board private constructor(cells: List<Int>) : List<Int> by cells {
@@ -12,7 +13,7 @@ class Board private constructor(cells: List<Int>) : List<Int> by cells {
   }
 
   val rows = cells.groupBy9()
-  val columns = rows.transpose()
+  val columns = rows.rotate()
   val houses = (0 until 9).map(cells::quadrant)
 
   val rowBlocks = rows.map(Block::fromList)
