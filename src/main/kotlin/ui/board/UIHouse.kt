@@ -7,11 +7,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import board.UiGrid
-import model.House
+import model.Cell
+import model.Grid
 
 @Composable
 @Preview
-fun UiHouse(house: House, maxWidth: Dp, modifier: Modifier = Modifier) {
+fun UiHouse(house: List<Cell>, maxWidth: Dp, modifier: Modifier = Modifier) {
   UiGrid(
     maxWidth,
     modifier,

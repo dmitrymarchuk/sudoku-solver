@@ -10,11 +10,11 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.Dp
 import board.UiGrid
-import model.MultiCell
+import model.Cell
 import model.SubCell
 
 @Composable
-fun UiMultiCell(cell: MultiCell, maxWidth: Dp) {
+fun UiMultiCell(cell: Cell.Multi, maxWidth: Dp) {
   UiGrid(maxWidth) { position ->
     val fontSize = with(LocalDensity.current) { (maxWidth / 3 / 1.25f).toSp() }
     val subCell = cell.subCells[position]

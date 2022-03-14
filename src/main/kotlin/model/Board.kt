@@ -1,16 +1,15 @@
 package model
 
-import model.Grid3x3.Companion.assertSize
-
-class Board private constructor(val houses: List<House>) : Grid3x3.Composite<Cell>,
-                                                           List<Grid3x3<Cell>> by houses {
+class Board(val cells: List<List<Cell>>) : List<List<Cell>> by cells {
   init {
-    assertSize(houses)
+    assert(cells.size == 9)
   }
 
   companion object {
-    fun fromHouses(vararg houses: House) =
+    fun from(vararg elements: Cell): Board =
+      Board((0 until 9).map { elements.take(9) })
+
+    fun from(vararg houses: List<Cell>): Board =
       Board(houses.toList())
   }
 }
-

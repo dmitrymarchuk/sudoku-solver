@@ -10,12 +10,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import board.UiGrid
 import model.Board
-import model.House
+import model.Cell
+import model.Grid
 
 @Composable
 @Preview
 fun UiBoard(
-  board: Board,
+  board: List<List<Cell>>,
 ) {
   BoxWithConstraints(modifier = Modifier.widthIn(200.dp, 500.dp)) {
     val box = this
@@ -27,7 +28,7 @@ fun UiBoard(
       innerBorderWidth = 0.5.dp,
       innerBorderColor = Color.Gray
     ) { position ->
-      UiHouse(board[position] as House, box.maxWidth / 3)
+      UiHouse(board[position], box.maxWidth / 3)
     }
   }
 }

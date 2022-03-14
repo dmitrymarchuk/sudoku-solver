@@ -8,4 +8,13 @@ sealed class Cell {
         get() = Value(this)
     }
   }
+
+  class Multi(
+    val subCells: Grid<SubCell>,
+  ) : Cell(),
+      List<SubCell> by subCells {
+    init {
+      assert(subCells.size == 9)
+    }
+  }
 }

@@ -9,7 +9,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import model.Cell
-import model.MultiCell
 
 @Composable
 fun BoxScope.UiCell(cell: Cell, maxWidth: Dp) {
@@ -25,7 +24,7 @@ fun BoxScope.UiCell(cell: Cell, maxWidth: Dp) {
         modifier = Modifier.align(Alignment.Center)
       )
     }
-    is MultiCell  -> {
+    is Cell.Multi -> {
       UiMultiCell(cell, maxWidth)
     }
   }
