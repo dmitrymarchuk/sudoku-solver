@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.min
 import board.UiGrid
 import model.ui.Cell
 
@@ -17,16 +18,16 @@ fun UiBoard(
   board: List<List<Cell>>,
 ) {
   BoxWithConstraints(modifier = Modifier.widthIn(200.dp, 500.dp)) {
-    val box = this
+    val maxWidthOrHeight = min(maxWidth, maxHeight)
     UiGrid(
-      maxWidth,
+      maxWidthOrHeight,
       modifier = Modifier.border(
         2.dp, Color.Black
       ),
       innerBorderWidth = 0.5.dp,
       innerBorderColor = Color.Gray
     ) { position ->
-      UiHouse(board[position], box.maxWidth / 3)
+      UiHouse(board[position], maxWidthOrHeight / 3)
     }
   }
 }

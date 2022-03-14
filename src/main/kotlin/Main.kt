@@ -15,19 +15,14 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import model.ui.BoardModel
 import model.parse.loadCsv
+import preview.sampleBoard
 import ui.board.UiBoard
 
 @Composable
 @Preview
-fun App(board: BoardModel, clicked: () -> Unit) {
+fun App(board: BoardModel = sampleBoard) {
   MaterialTheme {
-    Box(
-      modifier =
-      Modifier.widthIn(min = 400.dp, max = 800.dp)
-        .clickable { clicked() }
-    ) {
-      UiBoard(board)
-    }
+    UiBoard(board)
   }
 }
 
@@ -35,8 +30,12 @@ fun main() = application {
   val list = loadCsv().iterator()
   Window(onCloseRequest = ::exitApplication) {
     var board by remember { mutableStateOf(list.next()) }
-    App(board) {
-      board = list.next()
+    Box(
+      modifier =
+      Modifier.widthIn(min = 400.dp, max = 800.dp)
+        .clickable { board = list.next() }
+    ) {
+      App(board)
     }
   }
 }

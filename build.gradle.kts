@@ -19,6 +19,8 @@ repositories {
 dependencies {
   testImplementation(kotlin("test"))
   implementation(compose.desktop.currentOs)
+  implementation(compose.preview)
+  implementation(compose.uiTooling)
 }
 
 tasks.test {
