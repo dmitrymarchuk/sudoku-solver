@@ -24,7 +24,7 @@ fun BoxScope.UiCell(cell: Cell, maxWidth: Dp) {
         modifier = Modifier.align(Alignment.Center)
       )
     }
-    is Cell.Multi -> {
+    is Cell.Value.Multi -> {
       UiMultiCell(cell, maxWidth)
     }
   }

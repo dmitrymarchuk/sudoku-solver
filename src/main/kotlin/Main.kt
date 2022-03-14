@@ -1,5 +1,3 @@
-// Copyright 2000-2021 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.widthIn
@@ -13,12 +11,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
-import model.ui.BoardModel
 import model.parse.loadCsv
+import model.ui.Cell
 import ui.board.UiBoard
 
 @Composable
-fun App(board: BoardModel) {
+fun App(board: List<List<Cell>>) {
   MaterialTheme {
     UiBoard(board)
   }
@@ -33,7 +31,7 @@ fun main() = application {
       Modifier.widthIn(min = 400.dp, max = 800.dp)
         .clickable { board = list.next() }
     ) {
-      App(board.boardModel)
+      App(board.houses)
     }
   }
 }

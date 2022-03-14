@@ -1,8 +1,6 @@
 package model.parse
 
 import model.Board
-import model.ui.BoardModel
-import model.ui.Cell
 import java.io.BufferedReader
 import java.io.InputStreamReader
 

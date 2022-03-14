@@ -1,5 +1,6 @@
 package model
 
+import model.ui.Cell
 import util.check
 import util.set
 
@@ -17,7 +18,15 @@ value class Block(val value: UInt) {
   }
 
   companion object {
-    fun fromList(numbers: List<Int>): Block {
+    fun fromCells(cells: List<Cell>) =
+      fromNumbers(cells.map {
+        when (it) {
+          is Cell.Value -> it.value
+          else          -> 0
+        }
+      })
+
+    fun fromNumbers(numbers: List<Int>): Block {
       assert(numbers.size == 9)
       var result = 0u
 

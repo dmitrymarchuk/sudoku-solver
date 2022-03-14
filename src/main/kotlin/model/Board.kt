@@ -1,13 +1,11 @@
 package model
 
-import model.ui.BoardModel
 import model.ui.Cell
 import util.groupBy9
 import util.quadrant
 import util.rotate
-import util.transpose
 
-class Board private constructor(cells: List<Int>) : List<Int> by cells {
+class Board private constructor(cells: List<Cell>) : List<Cell> by cells {
   init {
     assert(cells.size == 9 * 9)
   }
@@ -16,9 +14,9 @@ class Board private constructor(cells: List<Int>) : List<Int> by cells {
   val columns = rows.rotate()
   val houses = (0 until 9).map(cells::quadrant)
 
-  val rowBlocks = rows.map(Block::fromList)
-  val columnBlocks = columns.map(Block::fromList)
-  val houseBlocks = houses.map(Block::fromList)
+  val rowBlocks = rows.map(Block::fromCells)
+  val columnBlocks = columns.map(Block::fromCells)
+  val houseBlocks = houses.map(Block::fromCells)
 
   val isSolved: Boolean
     get() {
@@ -28,18 +26,12 @@ class Board private constructor(cells: List<Int>) : List<Int> by cells {
       return row && column && house
     }
 
-  val boardModel: BoardModel by lazy {
-    BoardModel(houses.map { house -> house.map { if (it == 0) Cell.Empty else Cell.Value(it) } })
-  }
-
   companion object {
-    fun fromNumbers(cells: List<Int>): Board {
-      return Board(cells)
-    }
-
     fun fromString(str: String): Board {
       assert(str.length == 9 * 9)
-      return fromNumbers(str.map { it.digitToInt() })
+      return Board(str
+        .map { it.digitToInt() }
+        .map { if (it == 0) Cell.Empty else Cell.Value.Single(it) })
     }
   }
 }
