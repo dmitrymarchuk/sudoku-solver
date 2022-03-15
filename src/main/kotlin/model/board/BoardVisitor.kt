@@ -1,6 +1,6 @@
-package model.interfaces
+package model.board
 
-import model.ui.Cell
+import model.cell.Cell
 
 interface BoardVisitor {
   fun visitCells(visitor: (Board, Args) -> Board): Board

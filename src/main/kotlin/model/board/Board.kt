@@ -1,7 +1,6 @@
-package model.interfaces
+package model.board
 
-import model.BoardImpl
-import model.ui.Cell
+import model.cell.Cell
 import mu.KotlinLogging
 import util.assertNineSq
 
@@ -22,7 +21,7 @@ interface Board : List<Cell>, BoardVisitor {
 
   companion object {
     fun fromString(str: String): Board {
-      logger.info { "Load of board $str" }
+      logger.info { "Loading board $str" }
       str.length.assertNineSq()
       return BoardImpl(str
         .map { it.digitToInt() }

@@ -1,6 +1,6 @@
 package parse
 
-import model.interfaces.Board
+import model.board.Board
 import java.io.BufferedReader
 import java.io.InputStreamReader
 

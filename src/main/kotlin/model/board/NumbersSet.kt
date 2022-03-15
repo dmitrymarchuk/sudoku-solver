@@ -1,7 +1,6 @@
-package model.interfaces
+package model.board
 
-import model.NumbersSetImpl
-import model.ui.Cell
+import model.cell.Cell
 import util.assertNine
 import util.assertZeroToNine
 import util.set

@@ -1,7 +1,7 @@
 package model.impl
 
 import model.NumbersSetImpl
-import model.interfaces.NumbersSet
+import model.board.NumbersSet
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows

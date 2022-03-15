@@ -1,8 +1,8 @@
 package model.impl
 
 import model.BoardImpl
-import model.interfaces.Board
-import model.ui.Cell
+import solve.interfaces.Board
+import model.cell.Cell
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import util.repeat

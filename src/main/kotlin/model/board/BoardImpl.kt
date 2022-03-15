@@ -1,9 +1,6 @@
-package model
+package model.board
 
-import model.interfaces.Board
-import model.interfaces.BoardVisitor
-import model.interfaces.NumbersSet
-import model.ui.Cell
+import model.cell.Cell
 import mu.KotlinLogging
 import util.assertNineSq
 import util.groupBy9

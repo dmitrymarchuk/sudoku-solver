@@ -1,11 +1,11 @@
-package model.ui
+package model.cell
 
 sealed class SubCell {
   object Empty : SubCell()
 
-  data class Possible(val value: Int) : SubCell()
-  data class CrossedOut(val value: Int) : SubCell()
-  data class Highlighted(val value: Int) : SubCell()
+  data class Possible(override val value: Int) : SubCell(), ValueCell
+  data class CrossedOut(override val value: Int) : SubCell(), ValueCell
+  data class Highlighted(override val value: Int) : SubCell(), ValueCell
   companion object {
     val Int.possible
       get() = Possible(this)

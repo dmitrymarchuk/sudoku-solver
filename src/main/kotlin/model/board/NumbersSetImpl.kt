@@ -1,6 +1,5 @@
-package model
+package model.board
 
-import model.interfaces.NumbersSet
 import mu.KotlinLogging
 import util.assertOneToNine
 import util.check

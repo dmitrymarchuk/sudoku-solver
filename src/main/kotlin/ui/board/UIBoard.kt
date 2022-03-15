@@ -1,6 +1,5 @@
 package ui.board
 
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.widthIn
@@ -10,7 +9,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
 import board.UiGrid
-import model.ui.Cell
+import model.cell.Cell
 
 @Composable
 fun UiBoard(

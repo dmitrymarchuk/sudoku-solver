@@ -1,13 +1,12 @@
 package ui.board
 
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import board.UiGrid
-import model.ui.Cell
+import model.cell.Cell
 
 @Composable
 fun UiHouse(house: List<Cell>, maxWidth: Dp, modifier: Modifier = Modifier) {

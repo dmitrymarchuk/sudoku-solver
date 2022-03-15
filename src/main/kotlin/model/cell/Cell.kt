@@ -1,6 +1,5 @@
-package model.ui
+package model.cell
 
-import mu.KotlinLogging
 import util.assertNine
 import util.assertOneToNine
 import util.repeat
@@ -8,7 +7,7 @@ import util.replace
 
 sealed class Cell {
   object Empty : Cell()
-  data class Single(val value: Int) : Cell() {
+  data class Single(override val value: Int) : Cell(), ValueCell {
     init {
       value.assertOneToNine()
     }
@@ -21,7 +20,7 @@ sealed class Cell {
 
   data class Multi(
     private val subCells: List<SubCell>,
-  ) : Cell(), Iterable<SubCell> by subCells {
+  ) : Cell(), Collection<SubCell> by subCells {
 
     init {
       subCells.size.assertNine()

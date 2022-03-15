@@ -1,19 +1,20 @@
 package solve.impl
 
-import model.interfaces.Board
-import model.ui.Cell
-import model.ui.SubCell
+import model.board.Board
+import model.cell.Cell
+import model.cell.SubCell
 import org.junit.jupiter.api.Test
-import solve.BoardSolver
-import kotlin.test.assertFalse
+import solve.solvers.MarkPossiblePass
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.fail
 
-internal class BoardSolverTest {
+internal class MarkPossiblePassTest {
   @Test
-  fun markPossibleTest() {
+  fun test() {
+    val pass = MarkPossiblePass()
     val board = Board.fromString("004300209005009001070060043006002087190007400050083000600000105003508690042910300")
-    val markedBoard = BoardSolver.markPossible(board)
+    val markedBoard = pass.transform(board)
 
     assertEquals(0, markedBoard.filterIsInstance<Cell.Empty>().size)
     markedBoard.visitCells { dummyBoard, (multiCell, _, row, col, house) ->
