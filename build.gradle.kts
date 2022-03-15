@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "me.dmarchuk"
-version = "1.0"
+version = "1.0.0"
 
 repositories {
   google()
@@ -19,25 +19,26 @@ repositories {
 dependencies {
   testImplementation(kotlin("test"))
   implementation(compose.desktop.currentOs)
-  implementation(compose.preview)
-  implementation(compose.uiTooling)
+  implementation("io.github.microutils:kotlin-logging-jvm:2.1.20")
 }
 
-tasks.test {
-  useJUnitPlatform()
-}
-
-tasks.withType<KotlinCompile> {
-  kotlinOptions.jvmTarget = "17"
+tasks {
+  test {
+    useJUnitPlatform()
+  }
+  withType<KotlinCompile> {
+    kotlinOptions.jvmTarget = "17"
+  }
 }
 
 compose.desktop {
   application {
     mainClass = "MainKt"
+    jvmArgs("-ea")
     nativeDistributions {
       targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-      packageName = "sudoku-solver"
-      packageVersion = "1.0.0"
+      packageName = rootProject.name
+      packageVersion = version as String
     }
   }
 }

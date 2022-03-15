@@ -26,14 +26,14 @@ sealed class Cell {
       subCells.size.assertNine()
     }
 
-    operator fun get(index: Int): SubCell {
-      index.assertOneToNine()
-      return subCells[index - 1]
+    fun getSubCell(number: Int): SubCell {
+      number.assertOneToNine()
+      return subCells[number - 1]
     }
 
-    operator fun set(index: Int, value: SubCell): Multi {
-      index.assertOneToNine()
-      return Multi(subCells.replace(index - 1, value))
+    fun setSubCell(number: Int, cell: SubCell): Multi {
+      number.assertOneToNine()
+      return Multi(subCells.replace(number - 1, cell))
     }
 
     fun setPossible(possible: List<Int>): Multi {
@@ -43,7 +43,7 @@ sealed class Cell {
       possible.map {
         it.assertOneToNine()
 
-        result[it - 1] = when (this[it]) {
+        result[it - 1] = when (this.getSubCell(it)) {
           SubCell.Empty          -> SubCell.Possible(it)
           is SubCell.CrossedOut  -> SubCell.CrossedOut(it)
           is SubCell.Highlighted -> SubCell.Highlighted(it)

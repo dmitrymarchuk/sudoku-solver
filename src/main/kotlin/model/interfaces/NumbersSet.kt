@@ -3,7 +3,7 @@ package model.interfaces
 import model.NumbersSetImpl
 import model.ui.Cell
 import util.assertNine
-import util.assertZeroUntilNine
+import util.assertZeroToNine
 import util.set
 
 interface NumbersSet {
@@ -29,7 +29,7 @@ interface NumbersSet {
       var result = 0u
 
       numbers.forEach {
-        it.assertZeroUntilNine()
+        it.assertZeroToNine()
         if (it > 0) result = result.set(it)
       }
 

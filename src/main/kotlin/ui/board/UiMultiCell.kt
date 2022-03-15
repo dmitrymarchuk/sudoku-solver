@@ -18,19 +18,19 @@ import java.awt.SystemColor.text
 fun UiMultiCell(cell: Cell.Multi, maxWidth: Dp) {
   UiGrid(maxWidth) { position ->
     val fontSize = with(LocalDensity.current) { (maxWidth / 3 / 1.25f).toSp() }
-    val subCell = cell[position + 1]
+    val subCell = cell.getSubCell(position + 1)
     val modifier = Modifier.align(Alignment.Center)
     when (subCell) {
-      SubCell.Empty         ->
+      SubCell.Empty          ->
         Unit
-      is SubCell.Possible   ->
+      is SubCell.Possible    ->
         Text(
           modifier = modifier,
           fontSize = fontSize,
           color = Color.LightGray,
           text = subCell.value.toString()
         )
-      is SubCell.CrossedOut ->
+      is SubCell.CrossedOut  ->
         Text(
           modifier = modifier,
           fontSize = fontSize,

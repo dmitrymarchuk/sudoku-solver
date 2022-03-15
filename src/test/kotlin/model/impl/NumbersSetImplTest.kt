@@ -1,5 +1,6 @@
-package model
+package model.impl
 
+import model.NumbersSetImpl
 import model.interfaces.NumbersSet
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
@@ -11,7 +12,7 @@ internal class NumbersSetImplTest {
   private fun get(l: List<Int>) = NumbersSet.fromNumbers(l) as NumbersSetImpl
 
   @Test
-  fun testFromList() {
+  fun fromNumbersTest() {
     var set = get(9.repeat(0))
     assertEquals(0u, set.value)
 

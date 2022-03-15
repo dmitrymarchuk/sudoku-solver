@@ -2,6 +2,8 @@ package util
 
 val oneToNine = 1..9
 val zeroUntilNine = 0 until 9
+val zeroToNine = 0..9
+
 const val nineSq = 9 * 9
 
 fun Int.assertOneToNine() {
@@ -10,6 +12,10 @@ fun Int.assertOneToNine() {
 
 fun Int.assertZeroUntilNine() {
   assert(this in zeroUntilNine)
+}
+
+fun Int.assertZeroToNine() {
+  assert(this in zeroToNine)
 }
 
 fun Int.assertNineSq() {

@@ -1,5 +1,6 @@
-package model
+package model.impl
 
+import model.BoardImpl
 import model.interfaces.Board
 import model.ui.Cell
 import org.junit.jupiter.api.Assertions.*
