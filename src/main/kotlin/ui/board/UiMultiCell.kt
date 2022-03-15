@@ -12,12 +12,13 @@ import androidx.compose.ui.unit.Dp
 import board.UiGrid
 import model.ui.Cell
 import model.ui.SubCell
+import java.awt.SystemColor.text
 
 @Composable
 fun UiMultiCell(cell: Cell.Multi, maxWidth: Dp) {
   UiGrid(maxWidth) { position ->
     val fontSize = with(LocalDensity.current) { (maxWidth / 3 / 1.25f).toSp() }
-    val subCell = cell.subCells[position]
+    val subCell = cell[position + 1]
     val modifier = Modifier.align(Alignment.Center)
     when (subCell) {
       SubCell.Empty         ->
@@ -26,6 +27,7 @@ fun UiMultiCell(cell: Cell.Multi, maxWidth: Dp) {
         Text(
           modifier = modifier,
           fontSize = fontSize,
+          color = Color.LightGray,
           text = subCell.value.toString()
         )
       is SubCell.CrossedOut ->

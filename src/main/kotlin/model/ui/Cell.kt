@@ -1,7 +1,9 @@
 package model.ui
 
+import util.assertNine
 import util.assertOneToNine
 import util.repeat
+import util.replace
 
 sealed class Cell {
   object Empty : Cell()
@@ -17,16 +19,40 @@ sealed class Cell {
   }
 
   data class Multi(
-    val subCells: List<SubCell>,
-  ) : Cell(),
-      List<SubCell> by subCells {
+    private val subCells: List<SubCell>,
+  ) : Cell(), Iterable<SubCell> by subCells {
+
     init {
-      assert(subCells.size == 9)
+      subCells.size.assertNine()
+    }
+
+    operator fun get(index: Int): SubCell {
+      index.assertOneToNine()
+      return subCells[index - 1]
+    }
+
+    operator fun set(index: Int, value: SubCell): Multi {
+      index.assertOneToNine()
+      return Multi(subCells.replace(index - 1, value))
     }
 
     fun setPossible(possible: List<Int>): Multi {
-      return this
+      assert(possible.size <= 9)
+
+      val result: MutableList<SubCell> = 9.repeat(SubCell.Empty).toMutableList()
+      possible.map {
+        it.assertOneToNine()
+
+        result[it - 1] = when (this[it]) {
+          SubCell.Empty          -> SubCell.Possible(it)
+          is SubCell.CrossedOut  -> SubCell.CrossedOut(it)
+          is SubCell.Highlighted -> SubCell.Highlighted(it)
+          is SubCell.Possible    -> SubCell.Possible(it)
+        }
+      }
+      return Multi(result)
     }
+
     companion object {
       val Empty = Multi(9.repeat(SubCell.Empty))
     }

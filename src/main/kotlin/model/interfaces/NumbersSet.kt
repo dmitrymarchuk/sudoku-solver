@@ -2,6 +2,8 @@ package model.interfaces
 
 import model.NumbersSetImpl
 import model.ui.Cell
+import util.assertNine
+import util.assertZeroUntilNine
 import util.set
 
 interface NumbersSet {
@@ -23,11 +25,11 @@ interface NumbersSet {
     })
 
     fun fromNumbers(numbers: List<Int>): NumbersSet {
-      assert(numbers.size == 9)
+      numbers.size.assertNine()
       var result = 0u
 
       numbers.forEach {
-        assert(it in 0..9)
+        it.assertZeroUntilNine()
         if (it > 0) result = result.set(it)
       }
 

@@ -8,6 +8,14 @@ fun Int.assertOneToNine() {
   assert(this in oneToNine)
 }
 
+fun Int.assertZeroUntilNine() {
+  assert(this in zeroUntilNine)
+}
+
 fun Int.assertNineSq() {
   assert(this == nineSq)
+}
+
+fun Int.assertNine() {
+  assert(this == 9)
 }
