@@ -1,13 +1,15 @@
 package model
 
 import model.interfaces.NumbersSet
+import mu.KotlinLogging
 import util.assertOneToNine
 import util.check
 import util.oneToNine
 
 private val nineOnes = 0x3FEu
+private val logger = KotlinLogging.logger {}
 
-data class NumbersSetImpl(val value: UInt) : NumbersSet {
+class NumbersSetImpl(val value: UInt) : NumbersSet {
   override val hasAllNumbers get() = value xor nineOnes == 0u
   override val hasNoNumbers get() = value == 0u
   override val hasAnyNumber by lazy { value.countOneBits() > 0 }
@@ -18,5 +20,14 @@ data class NumbersSetImpl(val value: UInt) : NumbersSet {
   override fun has(number: Int): Boolean {
     number.assertOneToNine()
     return value.check(number)
+  }
+
+  override fun toString(): String {
+    return "${this::class.simpleName}(value=${value}, " +
+        "${this::hasAllNumbers.name}=${hasAllNumbers}, " +
+        "${this::hasNoNumbers.name}=${hasNoNumbers}), " +
+        "${this::hasAnyNumber.name}=${hasAnyNumber}, " +
+        "${this::missingNumbers.name}=${this.missingNumbers}, " +
+        "${this::presentNumbers.name}=${this.presentNumbers}, "
   }
 }

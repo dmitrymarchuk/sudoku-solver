@@ -7,6 +7,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import model.ui.Cell
+import mu.KotlinLogging
 import parse.loadCsv
 import solve.BoardSolver
 import ui.board.UiBoard
@@ -18,7 +19,9 @@ fun App(board: List<List<Cell>>) {
   }
 }
 
+private val logger = KotlinLogging.logger {}
 fun main() = application {
+  logger.info { "Assertions enabled: ${javaClass.desiredAssertionStatus()}" }
   val board = BoardSolver.markPossible(loadCsv().first())
   Window(onCloseRequest = ::exitApplication) {
 //    var board by remember { mutableStateOf(list) }

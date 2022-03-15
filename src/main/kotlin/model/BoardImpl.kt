@@ -1,15 +1,18 @@
 package model
 
-import model.interfaces.NumbersSet
 import model.interfaces.Board
 import model.interfaces.BoardVisitor
+import model.interfaces.NumbersSet
 import model.ui.Cell
+import mu.KotlinLogging
 import util.assertNineSq
 import util.groupBy9
 import util.quadrant
 import util.replace
 import util.rotate
 import util.zeroUntilNine
+
+private val logger = KotlinLogging.logger {}
 
 class BoardImpl(private val cells: List<Cell>) : Board, List<Cell> by cells {
   init {
@@ -24,24 +27,36 @@ class BoardImpl(private val cells: List<Cell>) : Board, List<Cell> by cells {
   override val colSets = columns.map(NumbersSet.Companion::fromCells)
   override val houseSets = houses.map(NumbersSet.Companion::fromCells)
 
-  override val isSolved: Boolean
-    get() {
-      val row = rowSets.all { it.hasAllNumbers }
-      val column = colSets.all { it.hasAllNumbers }
-      val house = houseSets.all { it.hasAllNumbers }
-      return row && column && house
+  init {
+    logger.debug {
+      "Board created.\n" +
+          "\t${this::rowSets.name}=${rowSets}" +
+          "\t${this::colSets.name}=${rowSets}" +
+          "\t${this::houseSets.name}=${houseSets}"
     }
+  }
+
+  override val isSolved by lazy {
+    val row = rowSets.all { it.hasAllNumbers }
+    val col = colSets.all { it.hasAllNumbers }
+    val house = houseSets.all { it.hasAllNumbers }
+    logger.debug { "Calculated isSolved for board $this: rows: $row, columns: $col, houses: $house" }
+    row && col && house
+  }
 
   override fun visitCells(visitor: (Board, BoardVisitor.Args) -> Board): Board {
     var board: Board = this
     forEachIndexed { index, cell ->
-      board = visitor(board, getVisitorArgsForIndex(index, cell))
+      val args = getVisitorArgsForIndex(index, cell)
+      logger.debug { "Visiting cell $args" }
+      board = visitor(board, args)
     }
 
     return board
   }
 
   override fun setCell(index: Int, cell: Cell): Board {
+    logger.debug { "Setting cell $cell at index $index" }
     return BoardImpl(cells.replace(index, cell))
   }
 

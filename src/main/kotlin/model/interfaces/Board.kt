@@ -2,7 +2,10 @@ package model.interfaces
 
 import model.BoardImpl
 import model.ui.Cell
+import mu.KotlinLogging
 import util.assertNineSq
+
+private val logger = KotlinLogging.logger {}
 
 interface Board : List<Cell>, BoardVisitor {
   val rows: List<List<Cell>>
@@ -19,6 +22,7 @@ interface Board : List<Cell>, BoardVisitor {
 
   companion object {
     fun fromString(str: String): Board {
+      logger.info { "Load of board $str" }
       str.length.assertNineSq()
       return BoardImpl(str
         .map { it.digitToInt() }
