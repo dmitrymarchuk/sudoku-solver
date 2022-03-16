@@ -31,8 +31,8 @@ class SolveEngine(initialBoard: Board) {
     }
 
     do {
-      eachCellPassYield(::NakedSingle) ?: break
-      eachCellPassYield(::MarkPossible)
+      if (!multiStepYield(::NakedSingle, ::MarkPossible).isComplete)
+        break
     } while (true)
   }
 
@@ -69,5 +69,28 @@ class SolveEngine(initialBoard: Board) {
     pass(passFactory).also { step ->
       yield(step ?: SolveStep.NoChange(board))
     }
+
+  private fun multiStep(
+    vararg factories: (Board) -> SolvePass,
+  ) = SolveStep.Change.MultiStep(
+    factories
+      .drop(1)
+      .runningFold(pass(factories.first())) { lastStep, factory ->
+        pass(factory).takeIf { lastStep != null }
+      }.filterNotNull())
+    .let {
+      MultiStepResult(factories.size == it.size, it)
+    }
+
+  private suspend fun SequenceScope<SolveStep>.multiStepYield(
+    vararg factories: (Board) -> SolvePass,
+  ) = multiStep(*factories).also {
+    yield(it.multiStep)
+  }
+
+  private data class MultiStepResult(
+    val isComplete: Boolean,
+    val multiStep: SolveStep.Change.MultiStep,
+  )
 }
 

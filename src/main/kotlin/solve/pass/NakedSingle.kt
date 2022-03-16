@@ -7,8 +7,6 @@ import model.cell.SubCell
 import model.cell.ValueCell
 import mu.KotlinLogging
 import solve.EachCellSolvePass
-import solve.Warning
-import solve.WarningService
 import solve.engine.SolveStep
 
 private val logger = KotlinLogging.logger {}
@@ -30,7 +28,7 @@ class NakedSingle(initialBoard: Board) :
       val crossedOutCells = valueCells.filterIsInstance<SubCell.CrossedOut>().toSet()
       val notCrossedOutCells = valueCells - crossedOutCells
       if (valueCells == crossedOutCells) {
-        WarningService.raiseWarning(Warning.AllPossibleCellsAreCrossedOut)
+        logger.warn { "All possible cells are crossed out at index ${index}!" }
       }
       if (notCrossedOutCells.size == 1) {
         logger.debug { "Found naked-single cell $index: $multiCell" }
