@@ -23,8 +23,8 @@ sealed class SolveStep {
       val changedIndices: List<Int>,
     ) : Change()
 
-    class MultiStep(
-      subSteps: List<Change>,
+    data class MultiStep(
+      private val subSteps: List<Change>,
     ) : Change(), List<Change> by subSteps {
       override val oldBoard: Board = subSteps.first().oldBoard
       override val board: Board = subSteps.last().board

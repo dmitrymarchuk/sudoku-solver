@@ -33,27 +33,28 @@ fun main() = application {
   Window(onCloseRequest = ::exitApplication) {
     var step by remember { mutableStateOf(solveSequence.next()) }
 
+    fun checkSolved() =
+      step.board.isSolved.also {
+        if (it) logger.info { "Board solved!" }
+      }
+
+    fun checkSequenceEmpty() =
+      (!solveSequence.hasNext()).also {
+        if (it) logger.warn { "Could not solve the board." }
+      }
+
     Box(
       modifier = Modifier
         .widthIn(min = 400.dp, max = 800.dp)
         .clickable {
-          if (step.board.isSolved) {
-            logger.info {
-              "Board solved!"
-            }
-            return@clickable
-          }
-          if (!solveSequence.hasNext()) {
-            logger.warn {
-              "Could not solve the board."
-            }
-            return@clickable
-          }
+          if (checkSolved() || checkSequenceEmpty()) return@clickable
 
           step = solveSequence.next()
           logger.info {
             "Performed solving step $step"
           }
+
+          if (checkSolved()) return@clickable
         }
     ) {
       App(step.board.houses)
