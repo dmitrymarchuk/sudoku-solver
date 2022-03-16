@@ -1,7 +1,7 @@
 package solve
 
-import model.board.Board
+import solve.engine.SolveStep
 
-interface SolvePass {
-  fun transform(board: Board): Board
+interface SolvePass: AutoCloseable {
+  fun execute(): SolveStep.Change?
 }

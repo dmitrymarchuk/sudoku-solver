@@ -3,7 +3,7 @@ package model.board
 import model.cell.Cell
 
 interface BoardVisitor {
-  fun visitCells(visitor: (Board, Args) -> Board): Board
+  fun visitCells(visitor: (Args) -> Unit)
 
   data class Args(
     val cell: Cell,

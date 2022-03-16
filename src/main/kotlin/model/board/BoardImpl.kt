@@ -41,15 +41,12 @@ class BoardImpl(private val cells: List<Cell>) : Board, List<Cell> by cells {
     row && col && house
   }
 
-  override fun visitCells(visitor: (Board, BoardVisitor.Args) -> Board): Board {
-    var board: Board = this
+  override fun visitCells(visitor: (BoardVisitor.Args) -> Unit) {
     forEachIndexed { index, cell ->
       val args = getVisitorArgsForIndex(index, cell)
       logger.debug { "Visiting cell $args" }
-      board = visitor(board, args)
+      visitor(args)
     }
-
-    return board
   }
 
   override fun setCell(index: Int, cell: Cell): Board {
@@ -57,12 +54,18 @@ class BoardImpl(private val cells: List<Cell>) : Board, List<Cell> by cells {
     return BoardImpl(cells.replace(index, cell))
   }
 
-  fun getVisitorArgsForIndex(index: Int, cell: Cell): BoardVisitor.Args {
+  fun getVisitorBlocksIndexes(index: Int): Triple<Int, Int, Int> {
     val row = index / 9
     val col = index - (row * 9)
     val boxRow = row / 3
     val boxCol = col / 3
     val house = (boxRow * 3) + boxCol
+
+    return Triple(row, col, house)
+  }
+
+  fun getVisitorArgsForIndex(index: Int, cell: Cell): BoardVisitor.Args {
+    val (row, col, house) = getVisitorBlocksIndexes(index)
 
     return BoardVisitor.Args(cell, index, rowSets[row], colSets[col], houseSets[house])
   }

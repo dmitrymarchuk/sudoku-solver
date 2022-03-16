@@ -1,9 +1,10 @@
 package model.impl
 
-import model.BoardImpl
-import solve.interfaces.Board
-import model.cell.Cell
-import org.junit.jupiter.api.Assertions.*
+import model.board.Board
+import model.board.BoardImpl
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import util.repeat
 
@@ -25,7 +26,7 @@ internal class BoardImplTest {
 
   @Test
   fun isNotSolvedTest2() {
-    val board = Board.fromString("68" + "4371259325849761971265843436192587198657432" +
+    val board = Board.fromString("80" + "4371259325849761971265843436192587198657432" +
         "257483916689734125713528694542916378")
     assertFalse(board.isSolved)
   }
@@ -33,50 +34,47 @@ internal class BoardImplTest {
   @Test
   fun getVisitorArgsHouse() {
     val board = Board.fromString(81.repeat("0").joinToString("")) as BoardImpl
-    val cell = Cell.Empty
 
-    assertEquals(0, board.getVisitorArgsForIndex(10, cell).house)
-    assertEquals(1, board.getVisitorArgsForIndex(3, cell).house)
-    assertEquals(2, board.getVisitorArgsForIndex(26, cell).house)
+    assertEquals(0, board.getVisitorBlocksIndexes(10).third)
+    assertEquals(1, board.getVisitorBlocksIndexes(3).third)
+    assertEquals(2, board.getVisitorBlocksIndexes(26).third)
 
-    assertEquals(3, board.getVisitorArgsForIndex(47, cell).house)
-    assertEquals(4, board.getVisitorArgsForIndex(48, cell).house)
-    assertEquals(5, board.getVisitorArgsForIndex(42, cell).house)
+    assertEquals(3, board.getVisitorBlocksIndexes(47).third)
+    assertEquals(4, board.getVisitorBlocksIndexes(48).third)
+    assertEquals(5, board.getVisitorBlocksIndexes(42).third)
 
-    assertEquals(6, board.getVisitorArgsForIndex(74, cell).house)
-    assertEquals(7, board.getVisitorArgsForIndex(68, cell).house)
-    assertEquals(8, board.getVisitorArgsForIndex(71, cell).house)
+    assertEquals(6, board.getVisitorBlocksIndexes(74).third)
+    assertEquals(7, board.getVisitorBlocksIndexes(68).third)
+    assertEquals(8, board.getVisitorBlocksIndexes(71).third)
   }
 
   @Test
   fun getVisitorArgsRow() {
     val board = Board.fromString(81.repeat("0").joinToString("")) as BoardImpl
-    val cell = Cell.Empty
 
-    assertEquals(0, board.getVisitorArgsForIndex(8, cell).row)
-    assertEquals(1, board.getVisitorArgsForIndex(17, cell).row)
-    assertEquals(2, board.getVisitorArgsForIndex(18, cell).row)
-    assertEquals(3, board.getVisitorArgsForIndex(31, cell).row)
-    assertEquals(4, board.getVisitorArgsForIndex(39, cell).row)
-    assertEquals(5, board.getVisitorArgsForIndex(51, cell).row)
-    assertEquals(6, board.getVisitorArgsForIndex(54, cell).row)
-    assertEquals(7, board.getVisitorArgsForIndex(68, cell).row)
-    assertEquals(8, board.getVisitorArgsForIndex(78, cell).row)
+    assertEquals(0, board.getVisitorBlocksIndexes(8).first)
+    assertEquals(1, board.getVisitorBlocksIndexes(17).first)
+    assertEquals(2, board.getVisitorBlocksIndexes(18).first)
+    assertEquals(3, board.getVisitorBlocksIndexes(31).first)
+    assertEquals(4, board.getVisitorBlocksIndexes(39).first)
+    assertEquals(5, board.getVisitorBlocksIndexes(51).first)
+    assertEquals(6, board.getVisitorBlocksIndexes(54).first)
+    assertEquals(7, board.getVisitorBlocksIndexes(68).first)
+    assertEquals(8, board.getVisitorBlocksIndexes(78).first)
   }
 
   @Test
   fun getVisitorArgsCol() {
     val board = Board.fromString(81.repeat("0").joinToString("")) as BoardImpl
-    val cell = Cell.Empty
 
-    assertEquals(0, board.getVisitorArgsForIndex(0, cell).col)
-    assertEquals(1, board.getVisitorArgsForIndex(73, cell).col)
-    assertEquals(2, board.getVisitorArgsForIndex(56, cell).col)
-    assertEquals(3, board.getVisitorArgsForIndex(3, cell).col)
-    assertEquals(4, board.getVisitorArgsForIndex(13, cell).col)
-    assertEquals(5, board.getVisitorArgsForIndex(23, cell).col)
-    assertEquals(6, board.getVisitorArgsForIndex(33, cell).col)
-    assertEquals(7, board.getVisitorArgsForIndex(70, cell).col)
-    assertEquals(8, board.getVisitorArgsForIndex(71, cell).col)
+    assertEquals(0, board.getVisitorBlocksIndexes(0).second)
+    assertEquals(1, board.getVisitorBlocksIndexes(73).second)
+    assertEquals(2, board.getVisitorBlocksIndexes(56).second)
+    assertEquals(3, board.getVisitorBlocksIndexes(3).second)
+    assertEquals(4, board.getVisitorBlocksIndexes(13).second)
+    assertEquals(5, board.getVisitorBlocksIndexes(23).second)
+    assertEquals(6, board.getVisitorBlocksIndexes(33).second)
+    assertEquals(7, board.getVisitorBlocksIndexes(70).second)
+    assertEquals(8, board.getVisitorBlocksIndexes(71).second)
   }
 }

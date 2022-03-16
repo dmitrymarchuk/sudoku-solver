@@ -1,8 +1,8 @@
 package model.board
 
 import model.cell.Cell
-import util.assertNine
 import util.assertZeroToNine
+import util.check
 import util.set
 
 interface NumbersSet {
@@ -24,12 +24,14 @@ interface NumbersSet {
     })
 
     fun fromNumbers(numbers: List<Int>): NumbersSet {
-      numbers.size.assertNine()
       var result = 0u
 
       numbers.forEach {
         it.assertZeroToNine()
-        if (it > 0) result = result.set(it)
+        if (it > 0) {
+          assert(!result.check(it))
+          result = result.set(it)
+        }
       }
 
       return NumbersSetImpl(result)

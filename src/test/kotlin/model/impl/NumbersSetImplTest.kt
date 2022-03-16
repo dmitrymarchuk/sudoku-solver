@@ -1,38 +1,39 @@
 package model.impl
 
-import model.NumbersSetImpl
 import model.board.NumbersSet
-import org.junit.jupiter.api.Assertions.*
+import model.board.NumbersSetImpl
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import util.repeat
-import java.lang.AssertionError
+import util.replace
 
 internal class NumbersSetImplTest {
   private fun get(l: List<Int>) = NumbersSet.fromNumbers(l) as NumbersSetImpl
 
   @Test
   fun fromNumbersTest() {
-    var set = get(9.repeat(0))
+    var set = get(emptyList())
     assertEquals(0u, set.value)
 
-    set = get(9.repeat(1))
+    set = get(listOf(1))
+    assertEquals(2u, set.value)
+
+    assertThrows<AssertionError> {
+      set = get(9.repeat(1))
+    }
+
+    assertThrows<AssertionError> {
+      set = get(listOf(1, 2, 3, 4, 5, 1))
+    }
+
+    set = get(9.repeat(0).replace(0, 1))
     assertEquals(2u, set.value)
 
     set = get((1..9).toList())
     assertEquals(0x3feu, set.value)
-
-    assertThrows<AssertionError> {
-      set = get(10.repeat(0))
-    }
-
-    assertThrows<AssertionError> {
-      set = get(emptyList())
-    }
-
-    assertThrows<AssertionError> {
-      set = get(listOf(1))
-    }
   }
 
   @Test

@@ -1,11 +1,33 @@
 package solve.engine
 
-import model.cell.Cell
+import model.board.Board
 
 sealed class SolveStep {
-  val noChanges get() = this is NoChanges
+  abstract val board: Board
 
-  object Initial : SolveStep()
-  object NoChanges : SolveStep()
-  data class SingleCellChanged(val index: Int, val oldCell: Cell, val newCell: Cell) : SolveStep()
+  class Initial(override val board: Board) : SolveStep()
+  class NoChange(override val board: Board) : SolveStep()
+
+  sealed class Change : SolveStep() {
+    abstract val oldBoard: Board
+
+    data class ValueCellsChanged(
+      override val board: Board,
+      override val oldBoard: Board,
+      val changedIndices: List<Int>,
+    ) : Change()
+
+    data class NonValueCellsChanged(
+      override val board: Board,
+      override val oldBoard: Board,
+      val changedIndices: List<Int>,
+    ) : Change()
+
+    class MultiStep(
+      val subSteps: List<Change>,
+    ) : Change() {
+      override val oldBoard: Board = subSteps.first().oldBoard
+      override val board: Board = subSteps.last().board
+    }
+  }
 }
