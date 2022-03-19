@@ -13,7 +13,7 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import model.cell.Cell
 import mu.KotlinLogging
-import parse.loadCsv
+import parse.loadSudokus
 import solve.engine.SolveEngine
 import ui.board.UiBoard
 
@@ -27,7 +27,7 @@ fun App(board: List<List<Cell>>) {
 private val logger = KotlinLogging.logger {}
 fun main() = application {
   logger.info { "Assertions enabled: ${javaClass.desiredAssertionStatus()}" }
-  val initialBoard = loadCsv().first()
+  val initialBoard = loadSudokus().first()
   val solveSequence = SolveEngine(initialBoard).getSolveSequence().iterator()
 
   Window(onCloseRequest = ::exitApplication) {

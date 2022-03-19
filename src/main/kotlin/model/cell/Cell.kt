@@ -6,7 +6,12 @@ import util.repeat
 import util.replace
 
 sealed class Cell {
-  object Empty : Cell()
+  object Empty : Cell() {
+    override fun toString(): String {
+      return "${Cell::class.simpleName}.${Empty::class.simpleName}"
+    }
+  }
+
   data class Single(override val value: Int) : Cell(), ValueCell {
     init {
       value.assertOneToNine()

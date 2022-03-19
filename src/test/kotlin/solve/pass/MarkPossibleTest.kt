@@ -4,6 +4,7 @@ import model.board.Board
 import model.cell.Cell
 import model.cell.SubCell
 import org.junit.jupiter.api.Test
+import solve.engine.SolveStep
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 import kotlin.test.fail
@@ -14,7 +15,9 @@ internal class MarkPossibleTest {
     val board = Board.fromString("00430020900500900107006004300600208719" +
         "0007400050083000600000105003508690042910300")
     val pass = MarkPossible(board)
-    val step = pass.execute() ?: fail()
+    val step = pass.execute().takeUnless { it.noChanges } ?: fail()
+
+    step as SolveStep.Change.Cells
 
     assertTrue(step.changedIndices.isNotEmpty())
     assertTrue(step.changedIndices.map(step.board::get).filterIsInstance<Cell.Empty>().isEmpty())

@@ -1,17 +1,23 @@
 package parse
 
 import model.board.Board
+import util.map
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
-fun loadCsv() = Thread
+fun loadLinesSequence(file: String) = Thread
   .currentThread()
   .contextClassLoader
-  .getResource("sudokus.csv")!!
+  .getResource(file)!!
   .openStream()
-  .let {
-    BufferedReader(InputStreamReader(it))
-  }
+  .let { BufferedReader(InputStreamReader(it)) }
   .lineSequence()
-  .map { it.split(",").first() }
-  .map(Board::fromString)
+
+fun loadSource1() = loadLinesSequence("sudokus.csv")
+  .map { it.split(",") }
+  .map { (first, second) -> Pair(first, second) }
+  .map { it.map(Board::fromString) }
+
+fun loadSudokus() =
+  loadSource1().map { it.first }
+

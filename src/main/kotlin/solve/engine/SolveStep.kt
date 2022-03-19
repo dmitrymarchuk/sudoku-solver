@@ -6,7 +6,7 @@ sealed class SolveStep {
   abstract val board: Board
   abstract val noChanges: Boolean
 
-  class Initial(override val board: Board) : SolveStep() {
+  data class Initial(override val board: Board) : SolveStep() {
     override val noChanges = true
   }
 

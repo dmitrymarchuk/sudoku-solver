@@ -6,6 +6,10 @@ fun <T> List<T>.groupBy9(): List<List<T>> {
   return zeroUntilNine.map { this.drop(9 * it).take(9) }
 }
 
+fun <T, R> Pair<T, T>.map(mapper: (T) -> R): Pair<R, R> {
+  return Pair(mapper(first), mapper(second))
+}
+
 fun <T> Int.repeat(value: T): List<T> {
   return (0 until this).map { value }
 }

@@ -64,9 +64,25 @@ class BoardImpl(private val cells: List<Cell>) : Board, List<Cell> by cells {
     return Triple(row, col, house)
   }
 
-  fun getVisitorArgsForIndex(index: Int, cell: Cell): BoardVisitor.Args {
+  private fun getVisitorArgsForIndex(index: Int, cell: Cell): BoardVisitor.Args {
     val (row, col, house) = getVisitorBlocksIndexes(index)
 
     return BoardVisitor.Args(cell, index, rowSets[row], colSets[col], houseSets[house])
   }
+
+  override fun equals(other: Any?): Boolean {
+    if (this === other) return true
+    if (javaClass != other?.javaClass) return false
+
+    other as BoardImpl
+
+    if (cells != other.cells) return false
+
+    return true
+  }
+
+  override fun hashCode(): Int {
+    return cells.hashCode()
+  }
+
 }
