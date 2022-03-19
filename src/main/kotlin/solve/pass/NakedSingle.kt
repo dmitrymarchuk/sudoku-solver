@@ -12,7 +12,7 @@ import solve.engine.SolveStep
 private val logger = KotlinLogging.logger {}
 
 class NakedSingle(initialBoard: Board) :
-  EachCellSolvePass<SolveStep.Change.ValueCellsChanged>(initialBoard) {
+  EachCellSolvePass(initialBoard) {
   override fun beforeVisitStart() {
     logger.info { "Looking for naked-single cells" }
   }
@@ -38,10 +38,10 @@ class NakedSingle(initialBoard: Board) :
     }
   }
 
-  override fun computeChange(): SolveStep.Change.ValueCellsChanged {
+  override fun computeChange(): SolveStep.Change.Cells {
     if (!multiCellPresent) {
       logger.warn { "Naked-single pass executed when no Cell.Multi cells were present." }
     }
-    return SolveStep.Change.ValueCellsChanged(board, initialBoard, changedIndices)
+    return SolveStep.Change.Cells(board, initialBoard, changedIndices)
   }
 }

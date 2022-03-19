@@ -2,7 +2,6 @@ package solve.engine
 
 import model.board.Board
 import mu.KotlinLogging
-import solve.EachCellSolvePass
 import solve.SolvePass
 import solve.pass.MarkPossible
 import solve.pass.NakedSingle
@@ -21,8 +20,8 @@ class SolveEngine(initialBoard: Board) {
     yield(SolveStep.Initial(board))
     if (board.isSolved) return
 
-    val initialMarkStep = eachCellPassYield(::MarkPossible)
-    if (initialMarkStep == null) {
+    val initialMarkStep = passYield(::MarkPossible)
+    if (initialMarkStep.noChanges) {
       logger.error {
         "No changes after initial mark-possible pass. " +
             "Highly likely that sudoku is incorrect!"
@@ -31,43 +30,27 @@ class SolveEngine(initialBoard: Board) {
     }
 
     do {
-      if (!multiStepYield(::NakedSingle, ::MarkPossible).isComplete)
+      if (multiStepYield(::NakedSingle,
+          ::MarkPossible).let { !it.isComplete || it.step.noChanges }
+      )
         break
     } while (true)
   }
 
-  @Suppress("UNCHECKED_CAST")
-  private suspend fun <
-      K : SolveStep.Change,
-      T : EachCellSolvePass<K>,
-      > SequenceScope<SolveStep>.eachCellPassYield(
-    passFactory: (Board) -> T,
-  ): K? =
-    passYield(passFactory) as K?
-
-  @Suppress("UNCHECKED_CAST")
-  private fun <
-      K : SolveStep.Change,
-      T : EachCellSolvePass<K>,
-      > eachCellPass(
-    passFactory: (Board) -> T,
-  ): K? =
-    pass(passFactory) as K?
-
   private fun pass(
     passFactory: (Board) -> SolvePass,
-  ): SolveStep.Change? =
+  ): SolveStep.Change =
     passFactory(board).execute().also { step ->
-      if (step != null) {
+      if (!step.noChanges) {
         board = step.board
       }
     }
 
   private suspend fun SequenceScope<SolveStep>.passYield(
     passFactory: (Board) -> SolvePass,
-  ): SolveStep.Change? =
+  ): SolveStep.Change =
     pass(passFactory).also { step ->
-      yield(step ?: SolveStep.NoChange(board))
+      yield(step)
     }
 
   private fun multiStep(
@@ -75,8 +58,8 @@ class SolveEngine(initialBoard: Board) {
   ) = SolveStep.Change.MultiStep(
     factories
       .drop(1)
-      .runningFold(pass(factories.first())) { lastStep, factory ->
-        pass(factory).takeIf { lastStep != null }
+      .runningFold(pass(factories.first()) as SolveStep.Change?) { lastStep, factory ->
+        pass(factory).takeUnless { lastStep == null || lastStep.noChanges }
       }.filterNotNull())
     .let {
       MultiStepResult(factories.size == it.size, it)
@@ -85,12 +68,12 @@ class SolveEngine(initialBoard: Board) {
   private suspend fun SequenceScope<SolveStep>.multiStepYield(
     vararg factories: (Board) -> SolvePass,
   ) = multiStep(*factories).also {
-    yield(it.multiStep)
+    yield(it.step)
   }
 
   private data class MultiStepResult(
     val isComplete: Boolean,
-    val multiStep: SolveStep.Change.MultiStep,
+    val step: SolveStep.Change.MultiStep,
   )
 }
 

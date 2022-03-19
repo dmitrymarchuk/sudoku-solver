@@ -10,7 +10,7 @@ import solve.engine.SolveStep
 private val logger = KotlinLogging.logger {}
 
 class MarkPossible(initialBoard: Board) :
-  EachCellSolvePass<SolveStep.Change.NonValueCellsChanged>(initialBoard) {
+  EachCellSolvePass(initialBoard) {
   override fun beforeVisitStart() {
     logger.info { "Calculating all possible cell values" }
   }
@@ -40,8 +40,8 @@ class MarkPossible(initialBoard: Board) :
     }
   }
 
-  override fun computeChange(): SolveStep.Change.NonValueCellsChanged {
-    return SolveStep.Change.NonValueCellsChanged(
+  override fun computeChange(): SolveStep.Change.Cells {
+    return SolveStep.Change.Cells(
       board,
       initialBoard,
       changedIndices)
