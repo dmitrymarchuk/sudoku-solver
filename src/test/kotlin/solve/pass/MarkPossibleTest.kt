@@ -1,39 +1,38 @@
 package solve.pass
 
-import model.board.Board
 import model.cell.Cell
 import model.cell.SubCell
-import org.junit.jupiter.api.Test
+import parse.loadSource1
 import solve.engine.SolveStep
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 import kotlin.test.fail
 
 internal class MarkPossibleTest {
-  @Test
+  @org.junit.jupiter.api.Test
   fun test() {
-    val board = Board.fromString("00430020900500900107006004300600208719" +
-        "0007400050083000600000105003508690042910300")
+    val board = loadSource1().first().first
     val pass = MarkPossible(board)
     val step = pass.execute().takeUnless { it.noChanges } ?: fail()
 
     step as SolveStep.Change.Cells
 
     assertTrue(step.changedIndices.isNotEmpty())
-    assertTrue(step.changedIndices.map(step.board::get).filterIsInstance<Cell.Empty>().isEmpty())
+    assertTrue(step.changedIndices
+      .map(step.board::get)
+      .filterIsInstance<Cell.Empty>()
+      .isEmpty())
 
-    step.board.visitCells { (multiCell, _, row, col, house) ->
+    step.board.visitCells { args ->
+      val multiCell = args.cell
       if (multiCell is Cell.Multi) {
         multiCell.forEach { subCell ->
           when (subCell) {
             is SubCell.Empty       -> Unit
             is SubCell.CrossedOut  -> fail()
             is SubCell.Highlighted -> fail()
-            is SubCell.Possible    -> {
-              assertFalse(row.has(subCell.value))
-              assertFalse(col.has(subCell.value))
-              assertFalse(house.has(subCell.value))
-            }
+            is SubCell.Possible    ->
+              args.sets.forEach { assertFalse(it.has(subCell.value)) }
           }
         }
       }

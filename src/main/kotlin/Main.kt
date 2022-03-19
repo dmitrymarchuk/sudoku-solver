@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import model.board.HouseType
 import model.cell.Cell
 import mu.KotlinLogging
 import parse.loadSudokus
@@ -57,7 +58,7 @@ fun main() = application {
           if (checkSolved()) return@clickable
         }
     ) {
-      App(step.board.houses)
+      App(step.board.house(HouseType.Block))
     }
   }
 }

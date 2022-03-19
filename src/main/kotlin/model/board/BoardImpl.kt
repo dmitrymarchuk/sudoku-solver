@@ -4,10 +4,9 @@ import model.cell.Cell
 import mu.KotlinLogging
 import util.assertNineSq
 import util.groupBy9
-import util.quadrant
 import util.replace
-import util.rotate
-import util.zeroUntilNine
+import util.rotateCW
+import util.rowsToQuadrants
 
 private val logger = KotlinLogging.logger {}
 
@@ -16,27 +15,36 @@ class BoardImpl(private val cells: List<Cell>) : Board, List<Cell> by cells {
     cells.size.assertNineSq()
   }
 
-  override val rows = cells.groupBy9()
-  override val columns = rows.rotate()
-  override val houses = zeroUntilNine.map(cells::quadrant)
+  val rows = cells.groupBy9()
+  val cols = rows.rotateCW()
+  val blocks = rows.rowsToQuadrants();
 
-  override val rowSets = rows.map(NumbersSet.Companion::fromCells)
-  override val colSets = columns.map(NumbersSet.Companion::fromCells)
-  override val houseSets = houses.map(NumbersSet.Companion::fromCells)
+  val rowSets = rows.map(NumbersSet.Companion::fromCells)
+  val colSets = cols.map(NumbersSet.Companion::fromCells)
+  val blockSets = blocks.map(NumbersSet.Companion::fromCells)
+
+  override fun house(type: HouseType) = when (type) {
+    HouseType.Row    -> rows
+    HouseType.Column -> cols
+    HouseType.Block  -> blocks
+  }
+
+  override fun houseSet(type: HouseType) = when (type) {
+    HouseType.Row    -> rowSets
+    HouseType.Column -> colSets
+    HouseType.Block  -> blockSets
+  }
 
   init {
     logger.debug {
-      "Board created.\n" +
-          "\t${this::rowSets.name}=${rowSets}" +
-          "\t${this::colSets.name}=${rowSets}" +
-          "\t${this::houseSets.name}=${houseSets}"
+      "Board created.\n" + "\t${this::rowSets.name}=${rowSets}" + "\t${this::colSets.name}=${rowSets}" + "\t${this::blockSets.name}=${blockSets}"
     }
   }
 
   override val isSolved by lazy {
     val row = rowSets.all { it.hasAllNumbers }
     val col = colSets.all { it.hasAllNumbers }
-    val house = houseSets.all { it.hasAllNumbers }
+    val house = blockSets.all { it.hasAllNumbers }
     logger.debug { "Calculated isSolved for board $this: rows: $row, columns: $col, houses: $house" }
     row && col && house
   }
@@ -54,20 +62,37 @@ class BoardImpl(private val cells: List<Cell>) : Board, List<Cell> by cells {
     return BoardImpl(cells.replace(index, cell))
   }
 
-  fun getVisitorBlocksIndexes(index: Int): Triple<Int, Int, Int> {
+  fun getVisitorHouseIndexes(index: Int): Triple<Int, Int, Int> {
     val row = index / 9
     val col = index - (row * 9)
     val boxRow = row / 3
     val boxCol = col / 3
-    val house = (boxRow * 3) + boxCol
+    val block = (boxRow * 3) + boxCol
 
-    return Triple(row, col, house)
+    return Triple(row, col, block)
   }
 
   private fun getVisitorArgsForIndex(index: Int, cell: Cell): BoardVisitor.Args {
-    val (row, col, house) = getVisitorBlocksIndexes(index)
+    val (row, col, block) = getVisitorHouseIndexes(index)
+    val getHouseIndex = { type: HouseType ->
+      when (type) {
+        HouseType.Row    -> row
+        HouseType.Column -> col
+        HouseType.Block  -> block
+      }
+    }
 
-    return BoardVisitor.Args(cell, index, rowSets[row], colSets[col], houseSets[house])
+    return object : BoardVisitor.Args {
+      override val cell = cell
+      override val index = index
+
+      override fun set(type: HouseType) =
+        this@BoardImpl.houseSet(type)[getHouseIndex(type)]
+
+      override fun house(type: HouseType) =
+        this@BoardImpl.house(type)[getHouseIndex(type)]
+
+    }
   }
 
   override fun equals(other: Any?): Boolean {

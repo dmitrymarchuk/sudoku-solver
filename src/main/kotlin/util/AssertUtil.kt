@@ -25,3 +25,4 @@ fun Int.assertNineSq() {
 fun Int.assertNine() {
   assert(this == 9)
 }
+

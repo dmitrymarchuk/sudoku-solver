@@ -2,6 +2,7 @@ package solve.pass
 
 import model.board.Board
 import model.board.BoardVisitor
+import model.board.HouseType
 import model.cell.Cell
 import mu.KotlinLogging
 import solve.EachCellSolvePass
@@ -16,24 +17,22 @@ class MarkPossible(initialBoard: Board) :
   }
 
   override fun cellVisitor(args: BoardVisitor.Args) {
-    val (cell, index, row, col, house) = args
-
-    when (cell) {
+    when (args.cell) {
       Cell.Empty, is Cell.Multi -> {
-        val possible = listOf(row, col, house)
+        val possible = args.sets
           .map { it.missingNumbers.toSet() }
           .reduce { acc, set -> acc.intersect(set) }
-        val newCell = (if (cell is Cell.Empty) {
+        val newCell = (if (args.cell is Cell.Empty) {
           Cell.Multi.Empty
         } else {
-          cell as Cell.Multi
+          args.cell as Cell.Multi
         }).setPossible(possible.toList())
 
 
-        if (newCell != cell) {
-          logger.debug { "Possible cell values changed for cell $index: $newCell" }
-          board = board.setCell(index, newCell)
-          changedIndices.add(index)
+        if (newCell != args.cell) {
+          logger.debug { "Possible cell values changed for cell ${args.index}: $newCell" }
+          board = board.setCell(args.index, newCell)
+          changedIndices.add(args.index)
         }
       }
       is Cell.Single            -> Unit

@@ -19,7 +19,7 @@ val matrix = (
 internal class CollectionUtilTest {
   @Test
   fun groupBy9() {
-    val cells = (1 .. 9*9).toList()
+    val cells = (1..9 * 9).toList()
 
     assertEquals(cells, cells.groupBy9().flatten())
   }
@@ -31,7 +31,7 @@ internal class CollectionUtilTest {
 
   @Test
   fun rotateClockwise() {
-    assertEquals(matrix.groupBy9(), matrix.groupBy9().rotate().rotate().rotate().rotate())
+    assertEquals(matrix.groupBy9(), matrix.groupBy9().rotateCW().rotateCW().rotateCW().rotateCW())
   }
 
   @Test
@@ -63,5 +63,11 @@ internal class CollectionUtilTest {
 
     val quadrant8 = "125" + "694" + "378"
     assertEquals(quadrant8.map { it.digitToInt() }, matrix.quadrant(8))
+  }
+
+  @Test
+  fun quadrantsToRows() {
+    val cells = (0 until 9 * 9).toList()
+    assertEquals(cells, cells.groupBy9().rowsToQuadrants().quadrantsToRows().flatten())
   }
 }

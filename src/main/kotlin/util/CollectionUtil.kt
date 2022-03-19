@@ -22,7 +22,11 @@ fun <T> List<List<T>>.transpose(): List<List<T>> {
   }
 }
 
-fun <T> List<List<T>>.rotate(): List<List<T>> {
+fun <T> List<List<T>>.rotateCCW(): List<List<T>> {
+  return this.map { it.reversed() }.transpose()
+}
+
+fun <T> List<List<T>>.rotateCW(): List<List<T>> {
   return this.transpose().map { it.reversed() }
 }
 
@@ -45,3 +49,35 @@ fun <T> List<T>.quadrant(n: Int): List<T> {
 
   return firstRow + secondRow + thirdRow
 }
+
+fun <T> List<List<T>>.rowsToQuadrants(): List<List<T>> {
+  val flat = this.flatten()
+  return zeroUntilNine.map(flat::quadrant)
+}
+
+fun <T> List<List<T>>.quadrantsToRows(): List<List<T>> {
+  return zeroUntilNine.map { row ->
+    val q = (row / 3) * 3
+    val i = (row % 3) * 3
+
+    this[q + 0].subList(i, i + 3) +
+        this[q + 1].subList(i, i + 3) +
+        this[q + 2].subList(i, i + 3)
+  }
+}
+
+fun <T> Iterable<T>.toIndexed(): List<Indexed<T>> {
+  return this.mapIndexed { i, v -> Indexed(i, v) }
+}
+
+fun <T> List<T>.indexesDiff(other: List<T>): List<Int> {
+  assert(this.size == other.size)
+
+  return this
+    .zip(other)
+    .toIndexed()
+    .filter { it.value.let { (first, second) -> first != second } }
+    .map { it.index }
+}
+
+data class Indexed<T>(val index: Int, val value: T)

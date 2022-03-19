@@ -43,46 +43,46 @@ internal class BoardImplTest {
   fun getVisitorArgsHouse() {
     val board = Board.fromString(81.repeat("0").joinToString("")) as BoardImpl
 
-    assertEquals(0, board.getVisitorBlocksIndexes(10).third)
-    assertEquals(1, board.getVisitorBlocksIndexes(3).third)
-    assertEquals(2, board.getVisitorBlocksIndexes(26).third)
+    assertEquals(0, board.getVisitorHouseIndexes(10).third)
+    assertEquals(1, board.getVisitorHouseIndexes(3).third)
+    assertEquals(2, board.getVisitorHouseIndexes(26).third)
 
-    assertEquals(3, board.getVisitorBlocksIndexes(47).third)
-    assertEquals(4, board.getVisitorBlocksIndexes(48).third)
-    assertEquals(5, board.getVisitorBlocksIndexes(42).third)
+    assertEquals(3, board.getVisitorHouseIndexes(47).third)
+    assertEquals(4, board.getVisitorHouseIndexes(48).third)
+    assertEquals(5, board.getVisitorHouseIndexes(42).third)
 
-    assertEquals(6, board.getVisitorBlocksIndexes(74).third)
-    assertEquals(7, board.getVisitorBlocksIndexes(68).third)
-    assertEquals(8, board.getVisitorBlocksIndexes(71).third)
+    assertEquals(6, board.getVisitorHouseIndexes(74).third)
+    assertEquals(7, board.getVisitorHouseIndexes(68).third)
+    assertEquals(8, board.getVisitorHouseIndexes(71).third)
   }
 
   @Test
   fun getVisitorArgsRow() {
     val board = Board.fromString(81.repeat("0").joinToString("")) as BoardImpl
 
-    assertEquals(0, board.getVisitorBlocksIndexes(8).first)
-    assertEquals(1, board.getVisitorBlocksIndexes(17).first)
-    assertEquals(2, board.getVisitorBlocksIndexes(18).first)
-    assertEquals(3, board.getVisitorBlocksIndexes(31).first)
-    assertEquals(4, board.getVisitorBlocksIndexes(39).first)
-    assertEquals(5, board.getVisitorBlocksIndexes(51).first)
-    assertEquals(6, board.getVisitorBlocksIndexes(54).first)
-    assertEquals(7, board.getVisitorBlocksIndexes(68).first)
-    assertEquals(8, board.getVisitorBlocksIndexes(78).first)
+    assertEquals(0, board.getVisitorHouseIndexes(8).first)
+    assertEquals(1, board.getVisitorHouseIndexes(17).first)
+    assertEquals(2, board.getVisitorHouseIndexes(18).first)
+    assertEquals(3, board.getVisitorHouseIndexes(31).first)
+    assertEquals(4, board.getVisitorHouseIndexes(39).first)
+    assertEquals(5, board.getVisitorHouseIndexes(51).first)
+    assertEquals(6, board.getVisitorHouseIndexes(54).first)
+    assertEquals(7, board.getVisitorHouseIndexes(68).first)
+    assertEquals(8, board.getVisitorHouseIndexes(78).first)
   }
 
   @Test
   fun getVisitorArgsCol() {
     val board = Board.fromString(81.repeat("0").joinToString("")) as BoardImpl
 
-    assertEquals(0, board.getVisitorBlocksIndexes(0).second)
-    assertEquals(1, board.getVisitorBlocksIndexes(73).second)
-    assertEquals(2, board.getVisitorBlocksIndexes(56).second)
-    assertEquals(3, board.getVisitorBlocksIndexes(3).second)
-    assertEquals(4, board.getVisitorBlocksIndexes(13).second)
-    assertEquals(5, board.getVisitorBlocksIndexes(23).second)
-    assertEquals(6, board.getVisitorBlocksIndexes(33).second)
-    assertEquals(7, board.getVisitorBlocksIndexes(70).second)
-    assertEquals(8, board.getVisitorBlocksIndexes(71).second)
+    assertEquals(0, board.getVisitorHouseIndexes(0).second)
+    assertEquals(1, board.getVisitorHouseIndexes(73).second)
+    assertEquals(2, board.getVisitorHouseIndexes(56).second)
+    assertEquals(3, board.getVisitorHouseIndexes(3).second)
+    assertEquals(4, board.getVisitorHouseIndexes(13).second)
+    assertEquals(5, board.getVisitorHouseIndexes(23).second)
+    assertEquals(6, board.getVisitorHouseIndexes(33).second)
+    assertEquals(7, board.getVisitorHouseIndexes(70).second)
+    assertEquals(8, board.getVisitorHouseIndexes(71).second)
   }
 }

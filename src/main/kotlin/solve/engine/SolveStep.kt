@@ -1,6 +1,7 @@
 package solve.engine
 
 import model.board.Board
+import util.indexesDiff
 
 sealed class SolveStep {
   abstract val board: Board
@@ -18,6 +19,10 @@ sealed class SolveStep {
       override val oldBoard: Board,
       val changedIndices: List<Int>,
     ) : Change() {
+      constructor(board: Board, oldBoard: Board) : this(board,
+        oldBoard,
+        oldBoard.indexesDiff(board))
+
       override val noChanges = changedIndices.isEmpty()
     }
 

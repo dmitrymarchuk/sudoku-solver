@@ -20,7 +20,8 @@ class NakedSingle(initialBoard: Board) :
   private var multiCellPresent = false
 
   override fun cellVisitor(args: BoardVisitor.Args) {
-    val (multiCell, index) = args
+    val multiCell = args.cell
+    val index = args.index
 
     if (multiCell is Cell.Multi) {
       multiCellPresent = true
