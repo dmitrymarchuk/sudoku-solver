@@ -6,14 +6,14 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import parse.loadSource1
+import parse.loadEasy
 import solve.engine.SolveEngine
 import util.repeat
 
 internal class BoardImplTest {
   @Test
-  fun sudokuSourceTest() {
-    loadSource1().forEach { (initial, solved) ->
+  fun allEasyTest() {
+    loadEasy().forEach { (initial, solved) ->
       val vasa = SolveEngine(initial).getSolveSequence().last().board
       val result = solved == vasa
       assertTrue(result)

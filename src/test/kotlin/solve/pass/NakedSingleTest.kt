@@ -1,7 +1,7 @@
 package solve.pass
 
 import model.cell.Cell
-import parse.loadSource1
+import parse.loadEasy
 import solve.engine.SolveStep
 import kotlin.test.Test
 import kotlin.test.assertTrue
@@ -10,7 +10,7 @@ import kotlin.test.fail
 internal class NakedSingleTest {
   @Test
   fun test() {
-    val board = loadSource1().first().first
+    val board = loadEasy().first().first
     val markedBoard = MarkPossible(board).execute().board
     val step = NakedSingle(markedBoard).execute().takeUnless { it.noChanges } ?: fail()
 

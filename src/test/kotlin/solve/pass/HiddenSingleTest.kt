@@ -3,7 +3,7 @@ package solve.pass
 import model.board.HouseType
 import model.cell.Cell
 import model.cell.ValueCell
-import parse.loadSource1
+import parse.loadEasy
 import solve.engine.SolveStep
 import util.oneToNine
 import kotlin.test.Test
@@ -20,18 +20,18 @@ internal class HiddenSingleTest {
 
   @Test
   fun testCol() {
-    testHouse(HouseType.Row)
+    testHouse(HouseType.Column)
   }
 
   @Test
   fun testBlock() {
-    testHouse(HouseType.Row)
+    testHouse(HouseType.Block)
   }
 
   private fun testHouse(type: HouseType) {
     val markedBoard =
       MarkPossible(
-        loadSource1().first().first
+        loadEasy().first().first
       ).execute().board
 
     val step = HiddenSingle(type, markedBoard).execute() as SolveStep.Change.Cells

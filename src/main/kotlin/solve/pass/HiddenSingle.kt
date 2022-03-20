@@ -5,6 +5,7 @@ import model.board.HouseType
 import model.cell.Cell
 import model.cell.SubCell
 import model.cell.ValueCell
+import mu.KotlinLogging
 import solve.SolvePassBase
 import solve.engine.SolveStep
 import util.Indexed
@@ -13,20 +14,23 @@ import util.toIndexed
 
 typealias Histogram = Map<Int, List<Int>>
 
+private val logger = KotlinLogging.logger {}
+
 class HiddenSingle(
   private val type: HouseType,
   initialBoard: Board,
 ) : SolvePassBase(initialBoard) {
   override fun executeInternal(): SolveStep.Change {
+    logger.info { "Looking for hidden-single cells in ${type.toString().lowercase()}s" }
     val house = initialBoard.house(type)
-    val transformedHouse = house.mapIndexed(this::transform)
+    val transformedHouse = house.map(this::transform)
 
     return SolveStep.Change.Cells(
       Board.fromHouse(type, transformedHouse),
       initialBoard)
   }
 
-  private fun transform(index: Int, cells: List<Cell>): List<Cell> {
+  private fun transform(cells: List<Cell>): List<Cell> {
     val histogram = histogram(cells)
     val newCells = cells.toMutableList()
 
@@ -62,8 +66,10 @@ class HiddenSingle(
   companion object {
     fun rows(initialBoard: Board) =
       HiddenSingle(HouseType.Row, initialBoard)
+
     fun columns(initialBoard: Board) =
       HiddenSingle(HouseType.Column, initialBoard)
+
     fun blocks(initialBoard: Board) =
       HiddenSingle(HouseType.Block, initialBoard)
   }

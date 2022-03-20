@@ -7,6 +7,8 @@ plugins {
   id("org.jetbrains.compose") version "1.1.0"
 }
 
+val datasets = "https://github.com/t-dillon/tdoku/blob/master/benchmarks/README.md"
+
 group = "me.dmarchuk"
 version = "1.0.0"
 
@@ -20,7 +22,7 @@ dependencies {
   testImplementation(kotlin("test"))
   implementation(compose.desktop.currentOs)
   implementation("io.github.microutils:kotlin-logging-jvm:2.1.21")
-  implementation("org.slf4j:slf4j-simple:1.7.29")
+  implementation("org.slf4j:slf4j-simple:1.7.36")
 }
 
 tasks {

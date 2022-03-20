@@ -13,11 +13,15 @@ fun loadLinesSequence(file: String) = Thread
   .let { BufferedReader(InputStreamReader(it)) }
   .lineSequence()
 
-fun loadSource1() = loadLinesSequence("sudokus.csv")
+fun loadEasy() = loadLinesSequence("easy.csv")
   .map { it.split(",") }
   .map { (first, second) -> Pair(first, second) }
   .map { it.map(Board::fromString) }
 
+fun loadHard() = loadLinesSequence("hard.txt")
+  .map(Board::fromString)
+
 fun loadSudokus() =
-  loadSource1().map { it.first }
+//  loadEasy().map { it.first }
+  loadHard()
 

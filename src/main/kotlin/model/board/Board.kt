@@ -4,7 +4,7 @@ import model.cell.Cell
 import mu.KotlinLogging
 import util.assertNineSq
 import util.quadrantsToRows
-import util.transpose
+import util.rotateCCW
 
 private val logger = KotlinLogging.logger {}
 
@@ -20,7 +20,7 @@ interface Board : List<Cell>, BoardVisitor {
     fun fromHouse(type: HouseType, houses: List<List<Cell>>): Board {
       return when (type) {
         HouseType.Row    -> BoardImpl(houses.flatten())
-        HouseType.Column -> fromHouse(HouseType.Row, houses.transpose())
+        HouseType.Column -> fromHouse(HouseType.Row, houses.rotateCCW())
         HouseType.Block  -> fromHouse(HouseType.Row, houses.quadrantsToRows())
       }
     }
@@ -28,9 +28,11 @@ interface Board : List<Cell>, BoardVisitor {
     fun fromString(str: String): Board {
       logger.info { "Loading board $str" }
       str.length.assertNineSq()
-      return BoardImpl(str
-        .map { it.digitToInt() }
-        .map { if (it == 0) Cell.Empty else Cell.Single(it) })
+      return BoardImpl(
+        str
+          .replace('.', '0')
+          .map { it.digitToInt() }
+          .map { if (it == 0) Cell.Empty else Cell.Single(it) })
     }
   }
 }
