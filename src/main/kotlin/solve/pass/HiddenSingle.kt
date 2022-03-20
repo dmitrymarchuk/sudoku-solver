@@ -19,14 +19,14 @@ class HiddenSingle(
 ) : SolvePassBase(initialBoard) {
   override fun executeInternal(): SolveStep.Change {
     val house = initialBoard.house(type)
-    val transformedHouse = house.map(this::transformRow)
+    val transformedHouse = house.mapIndexed(this::transform)
 
     return SolveStep.Change.Cells(
       Board.fromHouse(type, transformedHouse),
       initialBoard)
   }
 
-  private fun transformRow(cells: List<Cell>): List<Cell> {
+  private fun transform(index: Int, cells: List<Cell>): List<Cell> {
     val histogram = histogram(cells)
     val newCells = cells.toMutableList()
 
@@ -34,9 +34,8 @@ class HiddenSingle(
       .entries
       .filter { it.value.size == 1 }
       .forEach { (number, list) ->
-        list.forEach {
-          newCells[it] = Cell.Single(number)
-        }
+        val (cell) = list
+        newCells[cell] = Cell.Single(number)
       }
 
     return newCells
