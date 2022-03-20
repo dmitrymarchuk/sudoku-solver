@@ -22,8 +22,8 @@ class HiddenSingle(
 ) : SolvePassBase(initialBoard) {
   override fun executeInternal(): SolveStep.Change {
     logger.info { "Looking for hidden-single cells in ${type.toString().lowercase()}s" }
-    val house = initialBoard.house(type)
-    val transformedHouse = house.map(this::transform)
+    val houses = initialBoard.houses(type)
+    val transformedHouse = houses.map(this::transform)
 
     return SolveStep.Change.Cells(
       Board.fromHouse(type, transformedHouse),

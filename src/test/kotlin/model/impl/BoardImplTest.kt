@@ -1,14 +1,13 @@
 package model.impl
 
 import model.board.Board
-import model.board.BoardImpl
+import model.board.HouseType
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import parse.loadEasy
 import solve.engine.SolveEngine
-import util.repeat
 
 internal class BoardImplTest {
   @Test
@@ -43,48 +42,42 @@ internal class BoardImplTest {
 
   @Test
   fun getVisitorArgsHouse() {
-    val board = Board.fromString(81.repeat("0").joinToString("")) as BoardImpl
+    assertEquals(0, Board.getHouseIndexForCellIndex(HouseType.Block, 10))
+    assertEquals(1, Board.getHouseIndexForCellIndex(HouseType.Block, 3))
+    assertEquals(2, Board.getHouseIndexForCellIndex(HouseType.Block, 26))
 
-    assertEquals(0, board.getVisitorHouseIndexes(10).third)
-    assertEquals(1, board.getVisitorHouseIndexes(3).third)
-    assertEquals(2, board.getVisitorHouseIndexes(26).third)
+    assertEquals(3, Board.getHouseIndexForCellIndex(HouseType.Block, 47))
+    assertEquals(4, Board.getHouseIndexForCellIndex(HouseType.Block, 48))
+    assertEquals(5, Board.getHouseIndexForCellIndex(HouseType.Block, 42))
 
-    assertEquals(3, board.getVisitorHouseIndexes(47).third)
-    assertEquals(4, board.getVisitorHouseIndexes(48).third)
-    assertEquals(5, board.getVisitorHouseIndexes(42).third)
-
-    assertEquals(6, board.getVisitorHouseIndexes(74).third)
-    assertEquals(7, board.getVisitorHouseIndexes(68).third)
-    assertEquals(8, board.getVisitorHouseIndexes(71).third)
+    assertEquals(6, Board.getHouseIndexForCellIndex(HouseType.Block, 74))
+    assertEquals(7, Board.getHouseIndexForCellIndex(HouseType.Block, 68))
+    assertEquals(8, Board.getHouseIndexForCellIndex(HouseType.Block, 71))
   }
 
   @Test
   fun getVisitorArgsRow() {
-    val board = Board.fromString(81.repeat("0").joinToString("")) as BoardImpl
-
-    assertEquals(0, board.getVisitorHouseIndexes(8).first)
-    assertEquals(1, board.getVisitorHouseIndexes(17).first)
-    assertEquals(2, board.getVisitorHouseIndexes(18).first)
-    assertEquals(3, board.getVisitorHouseIndexes(31).first)
-    assertEquals(4, board.getVisitorHouseIndexes(39).first)
-    assertEquals(5, board.getVisitorHouseIndexes(51).first)
-    assertEquals(6, board.getVisitorHouseIndexes(54).first)
-    assertEquals(7, board.getVisitorHouseIndexes(68).first)
-    assertEquals(8, board.getVisitorHouseIndexes(78).first)
+    assertEquals(0, Board.getHouseIndexForCellIndex(HouseType.Row, 8))
+    assertEquals(1, Board.getHouseIndexForCellIndex(HouseType.Row, 17))
+    assertEquals(2, Board.getHouseIndexForCellIndex(HouseType.Row, 18))
+    assertEquals(3, Board.getHouseIndexForCellIndex(HouseType.Row, 31))
+    assertEquals(4, Board.getHouseIndexForCellIndex(HouseType.Row, 39))
+    assertEquals(5, Board.getHouseIndexForCellIndex(HouseType.Row, 51))
+    assertEquals(6, Board.getHouseIndexForCellIndex(HouseType.Row, 54))
+    assertEquals(7, Board.getHouseIndexForCellIndex(HouseType.Row, 68))
+    assertEquals(8, Board.getHouseIndexForCellIndex(HouseType.Row, 78))
   }
 
   @Test
   fun getVisitorArgsCol() {
-    val board = Board.fromString(81.repeat("0").joinToString("")) as BoardImpl
-
-    assertEquals(0, board.getVisitorHouseIndexes(0).second)
-    assertEquals(1, board.getVisitorHouseIndexes(73).second)
-    assertEquals(2, board.getVisitorHouseIndexes(56).second)
-    assertEquals(3, board.getVisitorHouseIndexes(3).second)
-    assertEquals(4, board.getVisitorHouseIndexes(13).second)
-    assertEquals(5, board.getVisitorHouseIndexes(23).second)
-    assertEquals(6, board.getVisitorHouseIndexes(33).second)
-    assertEquals(7, board.getVisitorHouseIndexes(70).second)
-    assertEquals(8, board.getVisitorHouseIndexes(71).second)
+    assertEquals(0, Board.getHouseIndexForCellIndex(HouseType.Column, 0))
+    assertEquals(1, Board.getHouseIndexForCellIndex(HouseType.Column, 73))
+    assertEquals(2, Board.getHouseIndexForCellIndex(HouseType.Column, 56))
+    assertEquals(3, Board.getHouseIndexForCellIndex(HouseType.Column, 3))
+    assertEquals(4, Board.getHouseIndexForCellIndex(HouseType.Column, 13))
+    assertEquals(5, Board.getHouseIndexForCellIndex(HouseType.Column, 23))
+    assertEquals(6, Board.getHouseIndexForCellIndex(HouseType.Column, 33))
+    assertEquals(7, Board.getHouseIndexForCellIndex(HouseType.Column, 70))
+    assertEquals(8, Board.getHouseIndexForCellIndex(HouseType.Column, 71))
   }
 }

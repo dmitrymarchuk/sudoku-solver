@@ -6,6 +6,17 @@ import util.repeat
 import util.replace
 
 sealed class Cell {
+
+  companion object {
+    fun fromChar(char: Char) =
+      when {
+        char == '0' || char == '.' -> Empty
+        char.isDigit()             -> Single(char.digitToInt())
+        else                       ->
+          throw IllegalArgumentException()
+      }
+  }
+
   object Empty : Cell() {
     override fun toString(): String {
       return "${Cell::class.simpleName}.${Empty::class.simpleName}"

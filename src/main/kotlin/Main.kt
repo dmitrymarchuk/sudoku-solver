@@ -58,7 +58,7 @@ fun main() = application {
           if (checkSolved()) return@clickable
         }
     ) {
-      App(step.board.house(HouseType.Block))
+      App(step.board.houses(HouseType.Block))
     }
   }
 }

@@ -23,7 +23,7 @@ class BoardImpl(private val cells: List<Cell>) : Board, List<Cell> by cells {
   val colSets = cols.map(NumbersSet.Companion::fromCells)
   val blockSets = blocks.map(NumbersSet.Companion::fromCells)
 
-  override fun house(type: HouseType) = when (type) {
+  override fun houses(type: HouseType) = when (type) {
     HouseType.Row    -> rows
     HouseType.Column -> cols
     HouseType.Block  -> blocks
@@ -62,23 +62,12 @@ class BoardImpl(private val cells: List<Cell>) : Board, List<Cell> by cells {
     return BoardImpl(cells.replace(index, cell))
   }
 
-  fun getVisitorHouseIndexes(index: Int): Triple<Int, Int, Int> {
-    val row = index / 9
-    val col = index - (row * 9)
-    val boxRow = row / 3
-    val boxCol = col / 3
-    val block = (boxRow * 3) + boxCol
-
-    return Triple(row, col, block)
-  }
-
   private fun getVisitorArgsForIndex(index: Int, cell: Cell): BoardVisitor.Args {
-    val (row, col, block) = getVisitorHouseIndexes(index)
     val getHouseIndex = { type: HouseType ->
       when (type) {
-        HouseType.Row    -> row
-        HouseType.Column -> col
-        HouseType.Block  -> block
+        HouseType.Row    -> Board.getHouseIndexForCellIndex(HouseType.Row, index)
+        HouseType.Column -> Board.getHouseIndexForCellIndex(HouseType.Column, index)
+        HouseType.Block  -> Board.getHouseIndexForCellIndex(HouseType.Block, index)
       }
     }
 
@@ -90,7 +79,7 @@ class BoardImpl(private val cells: List<Cell>) : Board, List<Cell> by cells {
         this@BoardImpl.houseSet(type)[getHouseIndex(type)]
 
       override fun house(type: HouseType) =
-        this@BoardImpl.house(type)[getHouseIndex(type)]
+        this@BoardImpl.houses(type)[getHouseIndex(type)]
 
     }
   }
@@ -101,8 +90,7 @@ class BoardImpl(private val cells: List<Cell>) : Board, List<Cell> by cells {
 
     other as BoardImpl
 
-    if (cells != other.cells)
-      return false
+    if (cells != other.cells) return false
 
     return true
   }
