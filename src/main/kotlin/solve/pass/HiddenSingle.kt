@@ -58,4 +58,13 @@ class HiddenSingle(
           }.map { it.index }
       }
   }
+
+  companion object {
+    fun rows(initialBoard: Board) =
+      HiddenSingle(HouseType.Row, initialBoard)
+    fun columns(initialBoard: Board) =
+      HiddenSingle(HouseType.Column, initialBoard)
+    fun blocks(initialBoard: Board) =
+      HiddenSingle(HouseType.Block, initialBoard)
+  }
 }

@@ -14,7 +14,9 @@ internal class BoardImplTest {
   @Test
   fun sudokuSourceTest() {
     loadSource1().forEach { (initial, solved) ->
-      assertEquals(solved, SolveEngine(initial).getSolveSequence().last().board)
+      val vasa = SolveEngine(initial).getSolveSequence().last().board
+      val result = solved == vasa
+      assertTrue(result)
     }
   }
 

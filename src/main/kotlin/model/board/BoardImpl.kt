@@ -101,7 +101,8 @@ class BoardImpl(private val cells: List<Cell>) : Board, List<Cell> by cells {
 
     other as BoardImpl
 
-    if (cells != other.cells) return false
+    if (cells != other.cells)
+      return false
 
     return true
   }
