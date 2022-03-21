@@ -7,9 +7,7 @@ import model.cell.SubCell
 import model.cell.ValueCell
 import mu.KotlinLogging
 import solve.EachHouseSolvePass
-import solve.SolvePassBase
-import solve.engine.SolveStep
-import util.Indexed
+import util.filterIsInstanceIndexed
 import util.oneToNine
 import util.toIndexed
 
@@ -25,9 +23,9 @@ class HiddenSingle(
     logger.info { "Looking for hidden-single cells in ${type.toString().lowercase()}s" }
   }
 
-  override fun transformHouse(cells: List<Cell>): List<Cell> {
-    val histogram = histogram(cells)
-    val newCells = cells.toMutableList()
+  override fun transformHouse(house: List<Cell>): List<Cell> {
+    val histogram = histogram(house)
+    val newCells = house.toMutableList()
 
     histogram
       .entries
@@ -42,13 +40,11 @@ class HiddenSingle(
 
   @Suppress("UNCHECKED_CAST")
   private fun histogram(house: List<Cell>): Histogram {
-    val multis = house
-      .toIndexed()
-      .filter { it.value is Cell.Multi } as List<Indexed<Cell.Multi>>
-
     return oneToNine
       .associateWith { number ->
-        multis
+        house
+          .toIndexed()
+          .filterIsInstanceIndexed<Cell.Multi>()
           .filter { cell ->
             cell
               .value

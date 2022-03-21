@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit
 internal class BoardImplTest {
   @Test
   fun allEasyTest() {
-    loadEasy().take(1).forEach { (initial, solved) ->
+    loadEasy().forEach { (initial, solved) ->
       val vasa = SolveEngine(initial).getSolveSequence().last().board
       val result = solved == vasa
       assertTrue(result)

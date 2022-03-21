@@ -42,6 +42,10 @@ sealed class Cell {
       subCells.size.assertNine()
     }
 
+    val possible = subCells
+      .filterIsInstance<ValueCell>()
+      .filter { it !is SubCell.CrossedOut }
+
     fun getSubCell(number: Int): SubCell {
       number.assertOneToNine()
       return subCells[number - 1]

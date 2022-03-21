@@ -80,4 +80,9 @@ fun <T> List<T>.indexesDiff(other: List<T>): List<Int> {
     .map { it.index }
 }
 
+@Suppress("UNCHECKED_CAST")
+inline fun <reified T> List<Indexed<*>>.filterIsInstanceIndexed(): List<Indexed<T>> {
+  return this.filter { it.value is T } as List<Indexed<T>>
+}
+
 data class Indexed<T>(val index: Int, val value: T)
