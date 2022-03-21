@@ -15,13 +15,13 @@ class BoardImpl(private val cells: List<Cell>) : Board, List<Cell> by cells {
     cells.size.assertNineSq()
   }
 
-  val rows = cells.groupBy9()
-  val cols = rows.rotateCW()
-  val blocks = rows.rowsToQuadrants();
+  val rows by lazy { cells.groupBy9().map { House(HouseType.Row, it) } }
+  val cols by lazy { rows.rotateCW().map { House(HouseType.Column, it) } }
+  val blocks by lazy { rows.rowsToQuadrants().map { House(HouseType.Block, it) } }
 
-  val rowSets = rows.map(NumbersSet.Companion::fromCells)
-  val colSets = cols.map(NumbersSet.Companion::fromCells)
-  val blockSets = blocks.map(NumbersSet.Companion::fromCells)
+  val rowSets = rows.map(NumbersSet.Companion::fromHouse)
+  val colSets = cols.map(NumbersSet.Companion::fromHouse)
+  val blockSets = blocks.map(NumbersSet.Companion::fromHouse)
 
   override fun houses(type: HouseType) = when (type) {
     HouseType.Row    -> rows
@@ -29,7 +29,7 @@ class BoardImpl(private val cells: List<Cell>) : Board, List<Cell> by cells {
     HouseType.Block  -> blocks
   }
 
-  override fun houseSet(type: HouseType) = when (type) {
+  override fun houseSets(type: HouseType) = when (type) {
     HouseType.Row    -> rowSets
     HouseType.Column -> colSets
     HouseType.Block  -> blockSets
@@ -76,11 +76,10 @@ class BoardImpl(private val cells: List<Cell>) : Board, List<Cell> by cells {
       override val index = index
 
       override fun set(type: HouseType) =
-        this@BoardImpl.houseSet(type)[getHouseIndex(type)]
+        this@BoardImpl.houseSets(type)[getHouseIndex(type)]
 
       override fun house(type: HouseType) =
         this@BoardImpl.houses(type)[getHouseIndex(type)]
-
     }
   }
 

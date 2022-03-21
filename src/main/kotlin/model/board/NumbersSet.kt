@@ -16,7 +16,7 @@ interface NumbersSet {
   fun has(number: Int): Boolean
 
   companion object {
-    fun fromCells(cells: List<Cell>) = fromNumbers(cells.map {
+    fun fromHouse(house: House) = fromNumbers(house.map {
       when (it) {
         is Cell.Single -> it.value
         else           -> 0

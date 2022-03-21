@@ -12,9 +12,7 @@ import board.UiGrid
 import model.cell.Cell
 
 @Composable
-fun UiBoard(
-  board: List<List<Cell>>,
-) {
+fun UiBoard(board: List<List<Cell>>) {
   BoxWithConstraints(modifier = Modifier.widthIn(200.dp, 500.dp)) {
     val maxWidthOrHeight = min(maxWidth, maxHeight)
     UiGrid(

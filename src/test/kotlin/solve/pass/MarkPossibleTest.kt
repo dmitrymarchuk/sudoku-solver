@@ -32,7 +32,7 @@ internal class MarkPossibleTest {
             is SubCell.CrossedOut  -> fail()
             is SubCell.Highlighted -> fail()
             is SubCell.Possible    ->
-              args.sets.forEach { assertFalse(it.has(subCell.value)) }
+              args.numberSets.forEach { assertFalse(it.has(subCell.value)) }
           }
         }
       }

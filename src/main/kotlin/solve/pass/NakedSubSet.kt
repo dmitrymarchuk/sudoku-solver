@@ -2,14 +2,13 @@ package solve.pass
 
 import com.github.shiguruikai.combinatoricskt.combinations
 import model.board.Board
+import model.board.House
 import model.board.HouseType
 import model.cell.Cell
 import model.cell.SubCell
 import model.cell.ValueCell
 import mu.KotlinLogging
 import solve.EachHouseSolvePass
-import util.filterIsInstanceIndexed
-import util.toIndexed
 
 private val logger = KotlinLogging.logger {}
 
@@ -29,13 +28,12 @@ class NakedSubSet(
     }
   }
 
-  override fun transformHouse(house: List<Cell>) =
+  override fun transformHouse(house: House) =
     searchTransformCombinations(house)
 
-  private fun searchTransformCombinations(house: List<Cell>): List<Cell> {
+  private fun searchTransformCombinations(house: House): House {
     house
-      .toIndexed()
-      .filterIsInstanceIndexed<Cell.Multi>()
+      .multiCellsIndexed
       .combinations(size)
       .forEach { combination ->
         val possibleVariants =
@@ -55,18 +53,18 @@ class NakedSubSet(
   }
 
   private fun crossOutAllOthers(
-    cells: List<Cell>,
+    house: House,
     toCrossOut: Set<Int>,
     nakedSetIndexes: Set<Int>,
-  ): List<Cell> {
-    val newCells = cells.toMutableList()
-    cells.forEachIndexed { index, cell ->
+  ): House {
+    val newCells = house.builder
+    house.forEachIndexed { index, cell ->
       if (index !in nakedSetIndexes && cell is Cell.Multi) {
         newCells[index] = crossOutCell(cell, toCrossOut)
       }
     }
 
-    return newCells
+    return newCells.build()
   }
 
   private fun crossOutCell(cell: Cell.Multi, toCrossOut: Set<Int>): Cell.Multi =

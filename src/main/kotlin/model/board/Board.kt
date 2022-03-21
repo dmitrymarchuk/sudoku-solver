@@ -9,8 +9,8 @@ import util.rotateCCW
 private val logger = KotlinLogging.logger {}
 
 interface Board : List<Cell>, BoardVisitor {
-  fun houses(type: HouseType): List<List<Cell>>
-  fun houseSet(type: HouseType): List<NumbersSet>
+  fun houses(type: HouseType): List<House>
+  fun houseSets(type: HouseType): List<NumbersSet>
 
   fun setCell(index: Int, cell: Cell): Board
 
@@ -30,7 +30,7 @@ interface Board : List<Cell>, BoardVisitor {
       }
     }
 
-    fun fromHouse(type: HouseType, houses: List<List<Cell>>) =
+    fun fromHouse(type: HouseType, houses: List<House>) =
       when (type) {
         HouseType.Row    -> BoardImpl(houses.flatten())
         HouseType.Column -> BoardImpl(houses.rotateCCW().flatten())

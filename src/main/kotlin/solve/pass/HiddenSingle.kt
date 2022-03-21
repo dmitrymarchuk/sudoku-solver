@@ -1,6 +1,7 @@
 package solve.pass
 
 import model.board.Board
+import model.board.House
 import model.board.HouseType
 import model.cell.Cell
 import model.cell.SubCell
@@ -23,9 +24,9 @@ class HiddenSingle(
     logger.info { "Looking for hidden-single cells in ${type.toString().lowercase()}s" }
   }
 
-  override fun transformHouse(house: List<Cell>): List<Cell> {
+  override fun transformHouse(house: House): House {
     val histogram = histogram(house)
-    val newCells = house.toMutableList()
+    val newCells = house.builder
 
     histogram
       .entries
@@ -35,11 +36,11 @@ class HiddenSingle(
         newCells[cell] = Cell.Single(number)
       }
 
-    return newCells
+    return newCells.build()
   }
 
   @Suppress("UNCHECKED_CAST")
-  private fun histogram(house: List<Cell>): Histogram {
+  private fun histogram(house: House): Histogram {
     return oneToNine
       .associateWith { number ->
         house
