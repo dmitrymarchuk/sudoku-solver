@@ -1,8 +1,8 @@
 package solve.engine
 
+import SolvePassFactory
 import model.board.Board
 import mu.KotlinLogging
-import solve.SolvePass
 import solve.pass.HiddenSingle
 import solve.pass.MarkPossible
 import solve.pass.NakedSingle
@@ -39,7 +39,7 @@ class SolveEngine(initialBoard: Board) {
   }
 
   private fun pass(
-    passFactory: (Board) -> SolvePass,
+    passFactory: SolvePassFactory,
   ): SolveStep.Change = passFactory(board).execute().also { step ->
     if (!step.noChanges) {
       board = step.board
@@ -47,36 +47,37 @@ class SolveEngine(initialBoard: Board) {
   }
 
   private suspend fun SequenceScope<SolveStep>.passYield(
-    passFactory: (Board) -> SolvePass,
+    passFactory: SolvePassFactory,
   ): SolveStep.Change = pass(passFactory).also { step ->
     yield(step)
     if (board.isSolved)
       throw BoardSolvedException()
   }
 
-  private fun multiStep(
-    vararg factories: (Board) -> SolvePass,
-  ) = SolveStep.Change
-    .MultiStep(factories
+  private fun multiPass(
+    vararg factories: SolvePassFactory,
+  ) = //MultiPass(board, factories.toList()).execute()
+
+    SolveStep.Change.MultiStep(factories
       .drop(1)
       .runningFold(pass(factories.first())) { lastStep, factory ->
         if (lastStep.noChanges || lastStep.board.isSolved) lastStep
         else pass(factory)
       })
 
-  private suspend fun SequenceScope<SolveStep>.multiStepYield(
-    vararg factories: (Board) -> SolvePass,
-  ) = multiStep(*factories).also {
+  private suspend fun SequenceScope<SolveStep>.multiPassYield(
+    vararg factories: SolvePassFactory,
+  ) = multiPass(*factories).also {
     yield(it)
     if (board.isSolved)
       throw BoardSolvedException()
   }
 
   private suspend fun SequenceScope<SolveStep>.doWhileCan(
-    vararg factories: (Board) -> SolvePass,
+    vararg factories: SolvePassFactory,
   ) {
     do {
-      if (multiStepYield(*factories).let { it.noChanges || it.board.isSolved }) break
+      if (multiPassYield(*factories).noChanges) break
     } while (true)
   }
 }
