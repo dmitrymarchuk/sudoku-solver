@@ -42,9 +42,11 @@ sealed class Cell {
       subCells.size.assertNine()
     }
 
-    val possible = subCells
-      .filterIsInstance<ValueCell>()
-      .filter { it !is SubCell.CrossedOut }
+    val value by lazy { subCells.filterIsInstance<ValueCell>().toSet() }
+    val crossedOut by lazy { value.filterIsInstance<SubCell.CrossedOut>().toSet() }
+    val possible by lazy { value.filter { it !is SubCell.CrossedOut }.toSet() }
+    val empty by lazy { value.filterIsInstance<SubCell.Empty>().toSet() }
+    val highlighted by lazy { value.filterIsInstance<SubCell.Highlighted>().toSet() }
 
     fun getSubCell(number: Int): SubCell {
       number.assertOneToNine()

@@ -19,32 +19,23 @@ class BoardImpl(private val cells: List<Cell>) : Board, List<Cell> by cells {
   val cols by lazy { rows.rotateCW().map { House(HouseType.Column, it) } }
   val blocks by lazy { rows.rowsToQuadrants().map { House(HouseType.Block, it) } }
 
-  val rowSets = rows.map(NumbersSet.Companion::fromHouse)
-  val colSets = cols.map(NumbersSet.Companion::fromHouse)
-  val blockSets = blocks.map(NumbersSet.Companion::fromHouse)
-
   override fun houses(type: HouseType) = when (type) {
     HouseType.Row    -> rows
     HouseType.Column -> cols
     HouseType.Block  -> blocks
   }
 
-  override fun houseSets(type: HouseType) = when (type) {
-    HouseType.Row    -> rowSets
-    HouseType.Column -> colSets
-    HouseType.Block  -> blockSets
-  }
-
   init {
     logger.debug {
-      "Board created.\n" + "\t${this::rowSets.name}=${rowSets}" + "\t${this::colSets.name}=${rowSets}" + "\t${this::blockSets.name}=${blockSets}"
+      "Board created.\n" + "\t${this::rows.name}=${rows}" +
+          "\t${this::cols.name}=${cols}" + "\t${this::blocks.name}=${blocks}"
     }
   }
 
   override val isSolved by lazy {
-    val row = rowSets.all { it.hasAllNumbers }
-    val col = colSets.all { it.hasAllNumbers }
-    val house = blockSets.all { it.hasAllNumbers }
+    val row = rows.all { it.numbersSet.hasAllNumbers }
+    val col = cols.all { it.numbersSet.hasAllNumbers }
+    val house = blocks.all { it.numbersSet.hasAllNumbers }
     logger.debug { "Calculated isSolved for board $this: rows: $row, columns: $col, houses: $house" }
     row && col && house
   }
@@ -75,8 +66,8 @@ class BoardImpl(private val cells: List<Cell>) : Board, List<Cell> by cells {
       override val cell = cell
       override val index = index
 
-      override fun set(type: HouseType) =
-        this@BoardImpl.houseSets(type)[getHouseIndex(type)]
+      override fun numbersSet(type: HouseType) =
+        this@BoardImpl.houses(type)[getHouseIndex(type)].numbersSet
 
       override fun house(type: HouseType) =
         this@BoardImpl.houses(type)[getHouseIndex(type)]

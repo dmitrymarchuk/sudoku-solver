@@ -3,8 +3,6 @@ package solve.pass
 import model.board.Board
 import model.board.BoardVisitor
 import model.cell.Cell
-import model.cell.SubCell
-import model.cell.ValueCell
 import mu.KotlinLogging
 import solve.EachCellSolvePass
 import solve.engine.SolveStep
@@ -25,9 +23,9 @@ class NakedSingle(initialBoard: Board) :
 
     if (multiCell is Cell.Multi) {
       multiCellPresent = true
-      val valueCells = multiCell.filterIsInstance<ValueCell>().toSet()
-      val crossedOutCells = valueCells.filterIsInstance<SubCell.CrossedOut>().toSet()
-      val notCrossedOutCells = valueCells - crossedOutCells
+      val valueCells = multiCell.value
+      val crossedOutCells = multiCell.crossedOut
+      val notCrossedOutCells = multiCell.possible
       if (valueCells == crossedOutCells) {
         logger.warn { "All possible cells are crossed out at index ${index}!" }
       }

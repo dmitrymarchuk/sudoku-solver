@@ -10,7 +10,6 @@ private val logger = KotlinLogging.logger {}
 
 interface Board : List<Cell>, BoardVisitor {
   fun houses(type: HouseType): List<House>
-  fun houseSets(type: HouseType): List<NumbersSet>
 
   fun setCell(index: Int, cell: Cell): Board
 

@@ -2,6 +2,7 @@ package solve.pass
 
 import model.cell.Cell
 import model.cell.SubCell
+import org.junit.jupiter.api.Test
 import parse.loadEasy
 import solve.engine.SolveStep
 import kotlin.test.assertFalse
@@ -9,7 +10,7 @@ import kotlin.test.assertTrue
 import kotlin.test.fail
 
 internal class MarkPossibleTest {
-  @org.junit.jupiter.api.Test
+  @Test
   fun test() {
     val board = loadEasy().first().first
     val pass = MarkPossible(board)
@@ -18,10 +19,12 @@ internal class MarkPossibleTest {
     step as SolveStep.Change.Cells
 
     assertTrue(step.changedIndices.isNotEmpty())
-    assertTrue(step.changedIndices
-      .map(step.board::get)
-      .filterIsInstance<Cell.Empty>()
-      .isEmpty())
+    assertTrue(
+      step
+        .changedIndices
+        .map(step.board::get)
+        .filterIsInstance<Cell.Empty>()
+        .isEmpty())
 
     step.board.visitCells { args ->
       val multiCell = args.cell

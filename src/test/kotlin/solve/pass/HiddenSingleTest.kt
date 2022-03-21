@@ -5,7 +5,6 @@ import model.cell.Cell
 import model.cell.ValueCell
 import parse.loadEasy
 import solve.engine.SolveStep
-import util.oneToNine
 import kotlin.test.Test
 import kotlin.test.assertContains
 import kotlin.test.assertFalse
@@ -41,16 +40,16 @@ internal class HiddenSingleTest {
     step.oldBoard.visitCells { args ->
       val cell = args.cell
       if (cell !is Cell.Multi) return@visitCells
-      val house =
-        args.house(type).filterIsInstance<Cell.Multi>()
-      oneToNine
-        .map(cell::getSubCell)
-        .filterIsInstance<ValueCell>()
+      cell
+        .value
         .forEach { candidate ->
-          val size = house
-            .map { it.getSubCell(candidate.value) }
-            .filterIsInstance<ValueCell>()
-            .size
+          val size =
+            args
+              .house(type)
+              .multiCells
+              .map { it.getSubCell(candidate.value) }
+              .filterIsInstance<ValueCell>()
+              .size
           if (size == 1) {
             assertContains(changedIndicesClone, args.index)
             changedIndicesClone.remove(args.index)

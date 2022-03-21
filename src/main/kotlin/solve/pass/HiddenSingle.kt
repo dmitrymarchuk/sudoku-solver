@@ -44,8 +44,7 @@ class HiddenSingle(
     return oneToNine
       .associateWith { number ->
         house
-          .toIndexed()
-          .filterIsInstanceIndexed<Cell.Multi>()
+          .multiCellsIndexed
           .filter { cell ->
             cell
               .value
