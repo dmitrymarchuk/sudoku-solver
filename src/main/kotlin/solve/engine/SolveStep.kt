@@ -24,14 +24,26 @@ sealed class SolveStep {
         oldBoard.indexesDiff(board))
 
       override val noChanges = changedIndices.isEmpty()
+
+      companion object {
+        fun empty(board: Board) = Cells(board, board, emptyList())
+      }
     }
 
     data class MultiStep(
       private val subSteps: List<Change>,
+      val considerCombined: Boolean = false,
     ) : Change(), List<Change> by subSteps {
       override val oldBoard: Board = subSteps.first().oldBoard
       override val board: Board = subSteps.last().board
       override val noChanges = subSteps.all { it.noChanges }
+
+      fun combined() = MultiStep(subSteps = subSteps, considerCombined = true)
+
+      companion object {
+        fun fromSequence(vasa: suspend SequenceScope<Change>.() -> Unit): MultiStep =
+          MultiStep(sequence(vasa).toList())
+      }
     }
   }
 }

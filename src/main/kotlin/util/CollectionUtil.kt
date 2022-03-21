@@ -38,10 +38,9 @@ fun <T> List<T>.quadrant(n: Int): List<T> {
 
   assert(n in zeroUntilNine)
 
-  val firstIndex =
-    if (n < 3) n * 3
-    else if (n < 6) (9 * 3) + ((n % 3) * 3)
-    else (9 * 6) + ((n % 3) * 3)
+  val firstIndex = if (n < 3) n * 3
+  else if (n < 6) (9 * 3) + ((n % 3) * 3)
+  else (9 * 6) + ((n % 3) * 3)
 
   val firstRow = this.drop(firstIndex).take(3)
   val secondRow = this.drop(firstIndex + 9).take(3)
@@ -60,9 +59,8 @@ fun <T> List<List<T>>.quadrantsToRows(): List<List<T>> {
     val q = (row / 3) * 3
     val i = (row % 3) * 3
 
-    this[q + 0].subList(i, i + 3) +
-        this[q + 1].subList(i, i + 3) +
-        this[q + 2].subList(i, i + 3)
+    this[q + 0].subList(i, i + 3) + this[q + 1].subList(i, i + 3) + this[q + 2].subList(i,
+      i + 3)
   }
 }
 
@@ -84,5 +82,8 @@ fun <T> List<T>.indexesDiff(other: List<T>): List<Int> {
 inline fun <reified T> List<Indexed<*>>.filterIsInstanceIndexed(): List<Indexed<T>> {
   return this.filter { it.value is T } as List<Indexed<T>>
 }
+
+fun <T, U> Collection<T>.product(other: Collection<U>): List<Pair<T, U>> =
+  this.flatMap { x -> other.map { y -> Pair(x, y) } }
 
 data class Indexed<T>(val index: Int, val value: T)

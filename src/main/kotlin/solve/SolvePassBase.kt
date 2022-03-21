@@ -12,7 +12,7 @@ abstract class SolvePassBase(protected val initialBoard: Board) :
 
   protected var board = initialBoard
 
-  final override fun execute(): SolveStep.Change {
+  final override fun solve(): SolveStep.Change.Cells {
     if (closed) throw IllegalStateException("This solve pass has been closed!")
 
     return executeInternal()
@@ -23,5 +23,5 @@ abstract class SolvePassBase(protected val initialBoard: Board) :
       .also { closed = true }
   }
 
-  protected abstract fun executeInternal(): SolveStep.Change
+  protected abstract fun executeInternal(): SolveStep.Change.Cells
 }

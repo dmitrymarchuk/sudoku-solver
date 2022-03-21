@@ -7,7 +7,7 @@ import solve.engine.SolveStep
 
 abstract class EachHouseSolvePass(protected val type: HouseType, initialBoard: Board) :
   SolvePassBase(initialBoard) {
-  final override fun executeInternal(): SolveStep.Change {
+  final override fun executeInternal(): SolveStep.Change.Cells {
     prepare()
 
     val transformedHouse = initialBoard.houses(type).map(this::transformHouse)

@@ -31,9 +31,9 @@ internal class HiddenSingleTest {
     val markedBoard =
       MarkPossible(
         loadEasy().first().first
-      ).execute().board
+      ).solve().board
 
-    val step = HiddenSingle(type, markedBoard).execute() as SolveStep.Change.Cells
+    val step = HiddenSingle(type, markedBoard).solve() as SolveStep.Change.Cells
     assertFalse(step.noChanges)
 
     val changedIndicesClone = step.changedIndices.toMutableList()

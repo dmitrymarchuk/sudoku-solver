@@ -11,8 +11,8 @@ internal class NakedSingleTest {
   @Test
   fun test() {
     val board = loadEasy().first().first
-    val markedBoard = MarkPossible(board).execute().board
-    val step = NakedSingle(markedBoard).execute().takeUnless { it.noChanges } ?: fail()
+    val markedBoard = MarkPossible(board).solve().board
+    val step = NakedSingle(markedBoard).solve().takeUnless { it.noChanges } ?: fail()
 
     step as SolveStep.Change.Cells
 

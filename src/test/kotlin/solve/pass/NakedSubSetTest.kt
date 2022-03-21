@@ -24,12 +24,12 @@ internal class NakedSubSetTest {
           "204516093" +
           "100008060" +
           "500004010"
-    )).execute().board
+    )).solve().board
     val withoutNakedStep = NakedSubSet(
       HouseType.Row,
       2,
       board
-    ).execute() as SolveStep.Change.Cells
+    ).solve() as SolveStep.Change.Cells
     assertFalse(withoutNakedStep.noChanges)
     assertEquals(listOf(64, 73, 78), withoutNakedStep.changedIndices)
     assertEquals(
@@ -67,13 +67,13 @@ internal class NakedSubSetTest {
           "953782416" +
           "126543978" +
           "040961253"
-    )).execute().board
+    )).solve().board
 
     val withoutNakedStep = NakedSubSet(
       HouseType.Column,
       3,
       board
-    ).execute() as SolveStep.Change.Cells
+    ).solve() as SolveStep.Change.Cells
     assertFalse(withoutNakedStep.noChanges)
     assertEquals(listOf(1), withoutNakedStep.changedIndices)
     assertEquals(

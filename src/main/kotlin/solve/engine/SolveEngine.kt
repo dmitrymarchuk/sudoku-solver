@@ -2,83 +2,58 @@ package solve.engine
 
 import SolvePassFactory
 import model.board.Board
+import model.board.HouseType
 import mu.KotlinLogging
 import solve.pass.HiddenSingle
 import solve.pass.MarkPossible
 import solve.pass.NakedSingle
+import solve.pass.NakedSubSet
+import util.product
 
 private val logger = KotlinLogging.logger {}
 
-class SolveEngine(initialBoard: Board) {
-  private var board = initialBoard
-
+class SolveEngine(private val initialBoard: Board) {
   fun getSolveSequence(): Sequence<SolveStep> = sequence {
-    try {
-      solve()
-    } catch (e: BoardSolvedException) {
-      // do nothing
-    }
+    yield(SolveStep.Initial(initialBoard))
+    yield(markPossible(initialBoard))
+    yield(nakedSingle(initialBoard))
+    yield(hiddenSingle(initialBoard))
+    yield(nakedSubSets(initialBoard))
   }
 
-  private suspend fun SequenceScope<SolveStep>.solve() {
-    yield(SolveStep.Initial(board))
-    if (board.isSolved) return
-
-    val initialMarkStep = passYield(::MarkPossible)
-    if (initialMarkStep.noChanges) {
-      logger.error {
-        "No changes after initial mark-possible pass. " + "Highly likely that sudoku is incorrect!"
+  companion object {
+    val nakedSubSets: PassExecutor
+      get() {
+        val sizes = listOf(2, 3, 4)
+        val houses = HouseType.values().toList()
+        val product = sizes.product(houses)
+        return MultiStepExecutor(
+          *product
+            .map { (size, houseType) -> NakedSubSet.factory(houseType, size) }
+            .map(SolvePassFactory::toExecutor)
+            .toTypedArray()
+        )
+          .checkSolved()
+          .exhausting()
       }
-      return
-    }
 
-    doWhileCan(::NakedSingle, ::MarkPossible)
-    doWhileCan(HiddenSingle::rows, ::MarkPossible, ::NakedSingle, ::MarkPossible)
-    doWhileCan(HiddenSingle::columns, ::MarkPossible, ::NakedSingle, ::MarkPossible)
-    doWhileCan(HiddenSingle::blocks, ::MarkPossible, ::NakedSingle, ::MarkPossible)
-  }
+    val hiddenSingle: PassExecutor
+      get() = MultiStepExecutor(
+        HiddenSingle.Companion::rows then nakedSingle,
+        HiddenSingle.Companion::columns then nakedSingle,
+        HiddenSingle.Companion::blocks then nakedSingle)
+        .checkSolved()
+        .exhausting()
 
-  private fun pass(
-    passFactory: SolvePassFactory,
-  ): SolveStep.Change = passFactory(board).execute().also { step ->
-    if (!step.noChanges) {
-      board = step.board
-    }
-  }
+    val nakedSingle
+      get() =
+        ::NakedSingle combined markPossible
+          .checkSolved()
+          .exhausting()
 
-  private suspend fun SequenceScope<SolveStep>.passYield(
-    passFactory: SolvePassFactory,
-  ): SolveStep.Change = pass(passFactory).also { step ->
-    yield(step)
-    if (board.isSolved)
-      throw BoardSolvedException()
-  }
-
-  private fun multiPass(
-    vararg factories: SolvePassFactory,
-  ) = //MultiPass(board, factories.toList()).execute()
-
-    SolveStep.Change.MultiStep(factories
-      .drop(1)
-      .runningFold(pass(factories.first())) { lastStep, factory ->
-        if (lastStep.noChanges || lastStep.board.isSolved) lastStep
-        else pass(factory)
-      })
-
-  private suspend fun SequenceScope<SolveStep>.multiPassYield(
-    vararg factories: SolvePassFactory,
-  ) = multiPass(*factories).also {
-    yield(it)
-    if (board.isSolved)
-      throw BoardSolvedException()
-  }
-
-  private suspend fun SequenceScope<SolveStep>.doWhileCan(
-    vararg factories: SolvePassFactory,
-  ) {
-    do {
-      if (multiPassYield(*factories).noChanges) break
-    } while (true)
+    val markPossible: PassExecutor
+      get() =
+        ::MarkPossible.checkSolved()
   }
 }
 

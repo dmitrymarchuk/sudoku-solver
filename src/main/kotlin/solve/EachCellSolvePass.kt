@@ -11,7 +11,7 @@ abstract class EachCellSolvePass(initialBoard: Board) : SolvePassBase(initialBoa
     //do nothing
   }
 
-  final override fun executeInternal(): SolveStep.Change {
+  final override fun executeInternal(): SolveStep.Change.Cells {
     beforeVisitStart()
     initialBoard.visitCells(this::cellVisitor)
 
@@ -20,5 +20,5 @@ abstract class EachCellSolvePass(initialBoard: Board) : SolvePassBase(initialBoa
 
   protected abstract fun cellVisitor(args: BoardVisitor.Args)
 
-  protected abstract fun computeChange(): SolveStep.Change
+  protected abstract fun computeChange(): SolveStep.Change.Cells
 }

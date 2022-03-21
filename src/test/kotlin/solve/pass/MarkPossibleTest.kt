@@ -14,7 +14,7 @@ internal class MarkPossibleTest {
   fun test() {
     val board = loadEasy().first().first
     val pass = MarkPossible(board)
-    val step = pass.execute().takeUnless { it.noChanges } ?: fail()
+    val step = pass.solve().takeUnless { it.noChanges } ?: fail()
 
     step as SolveStep.Change.Cells
 

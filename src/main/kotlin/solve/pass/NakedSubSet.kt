@@ -1,5 +1,6 @@
 package solve.pass
 
+import SolvePassFactory
 import com.github.shiguruikai.combinatoricskt.combinations
 import model.board.Board
 import model.board.House
@@ -74,4 +75,20 @@ class NakedSubSet(
       else
         acc
     }
+
+  companion object {
+    fun factory(type: HouseType, size: Int): SolvePassFactory = { board: Board ->
+      NakedSubSet(type, size, board)
+    }
+
+    fun rowPairs(board: Board) = NakedSubSet(HouseType.Row, 2, board)
+    fun colPairs(board: Board) = NakedSubSet(HouseType.Column, 2, board)
+    fun blockPairs(board: Board) = NakedSubSet(HouseType.Block, 2, board)
+    fun rowTriples(board: Board) = NakedSubSet(HouseType.Row, 3, board)
+    fun colTriples(board: Board) = NakedSubSet(HouseType.Column, 3, board)
+    fun blockTriples(board: Board) = NakedSubSet(HouseType.Block, 3, board)
+    fun rowQuadruples(board: Board) = NakedSubSet(HouseType.Row, 4, board)
+    fun colQuadruples(board: Board) = NakedSubSet(HouseType.Column, 4, board)
+    fun blockQuadruples(board: Board) = NakedSubSet(HouseType.Block, 4, board)
+  }
 }
