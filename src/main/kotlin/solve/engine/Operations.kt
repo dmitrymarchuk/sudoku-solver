@@ -1,6 +1,6 @@
 package solve.engine
 
-import SolvePassFactory
+import solve.SolvePassFactory
 import solve.engine.executors.BoardSolvedCheckExecutor
 import solve.engine.executors.CombinedStepExecutor
 import solve.engine.executors.ExhaustingExecutor

@@ -8,9 +8,8 @@ import model.cell.SubCell
 import model.cell.ValueCell
 import mu.KotlinLogging
 import solve.EachHouseSolvePass
-import util.filterIsInstanceIndexed
+import solve.SolvePassFactory
 import util.oneToNine
-import util.toIndexed
 
 typealias Histogram = Map<Int, List<Int>>
 
@@ -55,13 +54,9 @@ class HiddenSingle(
   }
 
   companion object {
-    fun rows(initialBoard: Board) =
-      HiddenSingle(HouseType.Row, initialBoard)
-
-    fun columns(initialBoard: Board) =
-      HiddenSingle(HouseType.Column, initialBoard)
-
-    fun blocks(initialBoard: Board) =
-      HiddenSingle(HouseType.Block, initialBoard)
+    fun factory(type: HouseType): SolvePassFactory =
+      SolvePassFactory(HiddenSingle::class.simpleName!!) {
+        HiddenSingle(type, it)
+      }
   }
 }

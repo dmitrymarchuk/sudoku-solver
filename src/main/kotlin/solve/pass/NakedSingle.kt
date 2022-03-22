@@ -5,6 +5,7 @@ import model.board.BoardVisitor
 import model.cell.Cell
 import mu.KotlinLogging
 import solve.EachCellSolvePass
+import solve.SolvePassFactory
 import solve.engine.SolveStep
 
 private val logger = KotlinLogging.logger {}
@@ -42,5 +43,9 @@ class NakedSingle(initialBoard: Board) :
       logger.warn { "Naked-single pass executed when no Cell.Multi cells were present." }
     }
     return SolveStep.Change.Cells(board, initialBoard, changedIndices)
+  }
+
+  companion object {
+    val factory = SolvePassFactory(NakedSingle::class.simpleName!!) { NakedSingle(it) }
   }
 }

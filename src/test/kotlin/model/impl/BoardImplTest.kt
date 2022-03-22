@@ -9,10 +9,19 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Timeout
 import parse.loadEasy
 import solve.engine.SolveEngine
+import solve.engine.SolveEngine.Companion.hiddenSingle
+import solve.engine.SolveEngine.Companion.markPossible
+import solve.engine.SolveEngine.Companion.nakedSingle
+import solve.engine.SolveEngine.Companion.nakedSubSets
+import solve.engine.executors.MultiStepExecutor
+import solve.engine.executors.SinglePassExecutor
+import solve.engine.toExecutor
+import solve.pass.MarkPossible
 import java.util.concurrent.TimeUnit
 
 @Timeout(2, unit = TimeUnit.SECONDS)
 internal class BoardImplTest {
+
   @Test
   fun allEasyTest() {
     loadEasy().forEach { (initial, solved) ->

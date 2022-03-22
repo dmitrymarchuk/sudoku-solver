@@ -5,6 +5,7 @@ import model.board.BoardVisitor
 import model.cell.Cell
 import mu.KotlinLogging
 import solve.EachCellSolvePass
+import solve.SolvePassFactory
 import solve.engine.SolveStep
 
 private val logger = KotlinLogging.logger {}
@@ -43,5 +44,9 @@ class MarkPossible(initialBoard: Board) :
       board,
       initialBoard,
       changedIndices)
+  }
+
+  companion object {
+    val factory = SolvePassFactory(MarkPossible::class.simpleName!!) { MarkPossible(it) }
   }
 }

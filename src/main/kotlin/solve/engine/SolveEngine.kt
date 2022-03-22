@@ -1,6 +1,6 @@
 package solve.engine
 
-import SolvePassFactory
+import solve.SolvePassFactory
 import model.board.Board
 import model.board.HouseType
 import mu.KotlinLogging
@@ -17,13 +17,13 @@ private val logger = KotlinLogging.logger {}
 class SolveEngine(private val initialBoard: Board) {
   fun getSolveSequence(): Sequence<SolveStep> = sequence {
     yield(SolveStep.Initial(initialBoard))
-    yield(
-      MultiStepExecutor(
-        markPossible,
-        nakedSingle,
-        hiddenSingle,
-        nakedSubSets
-      )(initialBoard))
+    val mainExecutor = MultiStepExecutor(
+      markPossible,
+      nakedSingle,
+      hiddenSingle,
+      nakedSubSets
+    )
+    yield(mainExecutor(initialBoard))
   }
 
   companion object {
@@ -36,6 +36,7 @@ class SolveEngine(private val initialBoard: Board) {
           *product
             .map { (size, houseType) -> NakedSubSet.factory(houseType, size) }
             .map(SolvePassFactory::toExecutor)
+            .map { it then hiddenSingle }
             .toTypedArray()
         )
           .exhausting()
@@ -43,19 +44,19 @@ class SolveEngine(private val initialBoard: Board) {
 
     val hiddenSingle: PassExecutor
       get() = MultiStepExecutor(
-        HiddenSingle.Companion::rows then nakedSingle,
-        HiddenSingle.Companion::columns then nakedSingle,
-        HiddenSingle.Companion::blocks then nakedSingle)
+        *HouseType
+          .values()
+          .map { HiddenSingle.factory(it) then nakedSingle }
+          .toTypedArray())
         .exhausting()
 
     val nakedSingle
       get() =
-        (::NakedSingle combined markPossible)
+        (NakedSingle.factory combined markPossible)
           .exhausting()
 
     val markPossible: PassExecutor
-      get() =
-        ::MarkPossible.checkSolved()
+      get() = MarkPossible.factory.checkSolved()
   }
 }
 
