@@ -1,15 +1,21 @@
 package solve.engine
 
 import SolvePassFactory
+import solve.engine.executors.BoardSolvedCheckExecutor
+import solve.engine.executors.CombinedStepExecutor
+import solve.engine.executors.ExhaustingExecutor
+import solve.engine.executors.MultiStepExecutor
+import solve.engine.executors.PassExecutor
+import solve.engine.executors.SinglePassExecutor
 
-fun SolvePassFactory.checkSolved() = this.toExecutor().checkSolved()
+fun SolvePassFactory.checkSolved() = this.toExecutor()
 
 fun PassExecutor.checkSolved() = BoardSolvedCheckExecutor(this)
 
 fun SolvePassFactory.toExecutor() =
   SinglePassExecutor(this).checkSolved()
 
-fun PassExecutor.exhausting() = ExhaustingExecutor(this.checkSolved())
+fun PassExecutor.exhausting() = ExhaustingExecutor(this)
 
 infix fun SolvePassFactory.then(other: PassExecutor): MultiStepExecutor {
   return MultiStepExecutor(this.toExecutor(), other)

@@ -1,7 +1,8 @@
-package solve.engine
+package solve.engine.executors
 
 import SolvePassFactory
 import model.board.Board
+import solve.engine.SolveStep
 
 interface PassExecutor {
   operator fun invoke(board: Board): SolveStep.Change
@@ -20,15 +21,16 @@ class SinglePassExecutor(private val factory: SolvePassFactory) : PassExecutor {
 
 class MultiStepExecutor(private vararg val executors: PassExecutor) : PassExecutor {
   override operator fun invoke(board: Board): SolveStep.Change {
-    if (executors.isEmpty()) return SolveStep.Change.Cells(board, board, emptyList())
-
-    return SolveStep.Change.MultiStep.fromSequence {
-      var mutableBoard = board
-      executors.forEach { executor ->
-        val step = executor(mutableBoard)
-        yield(step)
-        mutableBoard = step.board
-      }
+    val iterator = executors.iterator()
+    return SolveStep.Change.MultiStep.fromSequence(
+      executors
+        .firstOrNull()
+        ?.invoke(board)) {
+      if (iterator.hasNext()) {
+        val executor = iterator.next()
+        val step = executor(it.board)
+        step
+      } else null
     }
   }
 }
@@ -45,18 +47,12 @@ class CombinedStepExecutor(private val multiStepExecutor: MultiStepExecutor) :
 }
 
 class ExhaustingExecutor(private val executor: PassExecutor) : PassExecutor {
-  override operator fun invoke(board: Board): SolveStep.Change.MultiStep {
-    return SolveStep.Change.MultiStep.fromSequence {
-      var mutableBoard = board
-      do {
-        if (mutableBoard.isSolved) break
-
-        val step = executor(mutableBoard)
-        mutableBoard = step.board
-        if (step.noChanges)
-          break
-
-      } while (true)
+  override operator fun invoke(board: Board): SolveStep.Change {
+    return SolveStep.Change.MultiStep.fromSequence(executor(board)) { step ->
+      if (step.noChanges || step.board.isSolved)
+        null
+      else
+        executor(step.board)
     }
   }
 }

@@ -4,6 +4,8 @@ import SolvePassFactory
 import model.board.Board
 import model.board.HouseType
 import mu.KotlinLogging
+import solve.engine.executors.MultiStepExecutor
+import solve.engine.executors.PassExecutor
 import solve.pass.HiddenSingle
 import solve.pass.MarkPossible
 import solve.pass.NakedSingle
@@ -15,10 +17,13 @@ private val logger = KotlinLogging.logger {}
 class SolveEngine(private val initialBoard: Board) {
   fun getSolveSequence(): Sequence<SolveStep> = sequence {
     yield(SolveStep.Initial(initialBoard))
-    yield(markPossible(initialBoard))
-    yield(nakedSingle(initialBoard))
-    yield(hiddenSingle(initialBoard))
-    yield(nakedSubSets(initialBoard))
+    yield(
+      MultiStepExecutor(
+        markPossible,
+        nakedSingle,
+        hiddenSingle,
+        nakedSubSets
+      )(initialBoard))
   }
 
   companion object {
@@ -33,7 +38,6 @@ class SolveEngine(private val initialBoard: Board) {
             .map(SolvePassFactory::toExecutor)
             .toTypedArray()
         )
-          .checkSolved()
           .exhausting()
       }
 
@@ -42,13 +46,11 @@ class SolveEngine(private val initialBoard: Board) {
         HiddenSingle.Companion::rows then nakedSingle,
         HiddenSingle.Companion::columns then nakedSingle,
         HiddenSingle.Companion::blocks then nakedSingle)
-        .checkSolved()
         .exhausting()
 
     val nakedSingle
       get() =
-        ::NakedSingle combined markPossible
-          .checkSolved()
+        (::NakedSingle combined markPossible)
           .exhausting()
 
     val markPossible: PassExecutor
