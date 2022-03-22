@@ -1,7 +1,5 @@
 package solve.engine
 
-import solve.engine.executors.BoardSolvedCheckExecutor
-import solve.engine.executors.CombinedStepExecutor
 import solve.engine.executors.ExhaustingExecutor
 import solve.engine.executors.MultiStepExecutor
 import solve.engine.executors.PassExecutor
@@ -12,19 +10,18 @@ class ExecutorToStringSerializer(
   private val level: Int = 0,
 ) {
   private fun tabs(level: Int) = "\t".repeat(level)
+
+  @Suppress("REDUNDANT_ELSE_IN_WHEN")
   override fun toString(): String {
     return when (e) {
-      is BoardSolvedCheckExecutor -> "isSolved(${
-        ExecutorToStringSerializer(e.executor, level)
-      })"
-      is CombinedStepExecutor     ->
-        multi("Combined", e.multiStepExecutor.executors.toList())
-      is ExhaustingExecutor       ->
+      is ExhaustingExecutor ->
         levelUp("exhausting", ExecutorToStringSerializer(e.executor, level + 1))
-      is MultiStepExecutor        ->
-        multi("Multi", e.executors.toList())
-      is SinglePassExecutor       ->
+      is MultiStepExecutor  ->
+        multi(e.executors)
+      is SinglePassExecutor ->
         e.toString()
+      else                  ->
+        throw IllegalStateException()
     }
   }
 
@@ -35,8 +32,8 @@ class ExecutorToStringSerializer(
         "\n" + tabs(level) + ")"
   }
 
-  private fun multi(header: String, executors: Iterable<PassExecutor>): String {
-    return levelUp(header, executors
+  private fun multi(executors: Array<out PassExecutor>): String {
+    return levelUp("Multi", executors
       .map { ExecutorToStringSerializer(it, level + 1) }
       .joinToString("\n${tabs(level + 1)}"))
   }

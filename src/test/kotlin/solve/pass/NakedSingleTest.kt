@@ -14,8 +14,6 @@ internal class NakedSingleTest {
     val markedBoard = MarkPossible(board).solve().board
     val step = NakedSingle(markedBoard).solve().takeUnless { it.noChanges } ?: fail()
 
-    step as SolveStep.Change.Cells
-
     assertTrue(step.changedIndices.isNotEmpty())
 
     step.board.visitCells { args ->

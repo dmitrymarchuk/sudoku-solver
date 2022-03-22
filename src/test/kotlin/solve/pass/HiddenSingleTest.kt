@@ -33,7 +33,7 @@ internal class HiddenSingleTest {
         loadEasy().first().first
       ).solve().board
 
-    val step = HiddenSingle(type, markedBoard).solve() as SolveStep.Change.Cells
+    val step = HiddenSingle(type, markedBoard).solve()
     assertFalse(step.noChanges)
 
     val changedIndicesClone = step.changedIndices.toMutableList()

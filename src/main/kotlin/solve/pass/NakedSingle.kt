@@ -12,10 +12,6 @@ private val logger = KotlinLogging.logger {}
 
 class NakedSingle(initialBoard: Board) :
   EachCellSolvePass(initialBoard) {
-  override fun beforeVisitStart() {
-    logger.info { "Looking for naked-single cells" }
-  }
-
   private var multiCellPresent = false
 
   override fun cellVisitor(args: BoardVisitor.Args) {

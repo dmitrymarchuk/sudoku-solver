@@ -32,7 +32,6 @@ sealed class SolveStep {
 
     data class MultiStep(
       private val subSteps: List<Change>,
-      val considerCombined: Boolean = false,
     ) : Change(), List<Change> by subSteps {
       init {
         assert(subSteps.isNotEmpty())
@@ -41,8 +40,6 @@ sealed class SolveStep {
       override val oldBoard: Board = subSteps.first().oldBoard
       override val board: Board = subSteps.last().board
       override val noChanges = subSteps.all { it.noChanges }
-
-      fun combined() = MultiStep(subSteps = subSteps, considerCombined = true)
 
       companion object {
         fun fromSequence(initial: Change?, computeStep: (Change) -> Change?): MultiStep =

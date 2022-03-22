@@ -19,10 +19,6 @@ class HiddenSingle(
   type: HouseType,
   initialBoard: Board,
 ) : EachHouseSolvePass(type, initialBoard) {
-  override fun prepare() {
-    logger.info { "Looking for hidden-single cells in ${type.toString().lowercase()}s" }
-  }
-
   override fun transformHouse(house: House): House {
     val histogram = histogram(house)
     val newCells = house.builder
@@ -55,7 +51,7 @@ class HiddenSingle(
 
   companion object {
     fun factory(type: HouseType): SolvePassFactory =
-      SolvePassFactory(HiddenSingle::class.simpleName!!) {
+      SolvePassFactory("${HiddenSingle::class.simpleName}{$type}") {
         HiddenSingle(type, it)
       }
   }

@@ -29,7 +29,7 @@ internal class NakedSubSetTest {
       HouseType.Row,
       2,
       board
-    ).solve() as SolveStep.Change.Cells
+    ).solve()
     assertFalse(withoutNakedStep.noChanges)
     assertEquals(listOf(64, 73, 78), withoutNakedStep.changedIndices)
     assertEquals(
@@ -73,7 +73,7 @@ internal class NakedSubSetTest {
       HouseType.Column,
       3,
       board
-    ).solve() as SolveStep.Change.Cells
+    ).solve()
     assertFalse(withoutNakedStep.noChanges)
     assertEquals(listOf(1), withoutNakedStep.changedIndices)
     assertEquals(

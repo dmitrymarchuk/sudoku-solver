@@ -12,10 +12,6 @@ private val logger = KotlinLogging.logger {}
 
 class MarkPossible(initialBoard: Board) :
   EachCellSolvePass(initialBoard) {
-  override fun beforeVisitStart() {
-    logger.info { "Calculating all possible cell values" }
-  }
-
   override fun cellVisitor(args: BoardVisitor.Args) {
     when (args.cell) {
       Cell.Empty, is Cell.Multi -> {

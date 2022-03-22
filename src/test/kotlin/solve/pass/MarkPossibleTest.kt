@@ -16,8 +16,6 @@ internal class MarkPossibleTest {
     val pass = MarkPossible(board)
     val step = pass.solve().takeUnless { it.noChanges } ?: fail()
 
-    step as SolveStep.Change.Cells
-
     assertTrue(step.changedIndices.isNotEmpty())
     assertTrue(
       step

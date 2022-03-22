@@ -15,7 +15,7 @@ internal class SolveEngineTest {
     }
   }
 
-  //  @Test
+  @Test
   fun hardTest() {
     loadHard().take(1).forEach {
       assertTrue(SolveEngine(it).getSolveSequence().last().board.isSolved)

@@ -22,13 +22,6 @@ class NakedSubSet(
     size in 2..4
   }
 
-  override fun prepare() {
-    logger.info {
-      "Looking for naked-single cell $size-size sets " +
-          "in ${type.toString().lowercase()}s"
-    }
-  }
-
   override fun transformHouse(house: House) =
     searchTransformCombinations(house)
 
