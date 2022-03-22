@@ -23,15 +23,6 @@ import java.util.concurrent.TimeUnit
 internal class BoardImplTest {
 
   @Test
-  fun allEasyTest() {
-    loadEasy().forEach { (initial, solved) ->
-      val vasa = SolveEngine(initial).getSolveSequence().last().board
-      val result = solved == vasa
-      assertTrue(result)
-    }
-  }
-
-  @Test
   fun isSolvedTest() {
     val board = Board.fromString(("864371259325849761971265843436192587198657432" +
         "257483916689734125713528694542916378"))
